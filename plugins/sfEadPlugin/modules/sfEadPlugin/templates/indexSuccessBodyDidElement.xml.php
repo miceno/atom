@@ -137,11 +137,14 @@
     </langmaterial>
   <?php } ?>
 
-  <?php if (${$resourceVar}->sources) { ?>
+  <?php $template = $ead->getMetadataParameter('relatedencoding'); ?>
+  <?php $controlSources = 'app_element_visibility_'.$template.'_control_sources'; ?>
+  <?php if (${$resourceVar}->sources && ($sf_user->isAuthenticated() || 1 == sfConfig::get($controlSources))) { ?>
     <note type="sourcesDescription"><p><?php echo escape_dc(esc_specialchars(${$resourceVar}->sources)); ?></p></note>
   <?php } ?>
 
-  <?php if (0 < count($notes = ${$resourceVar}->getNotesByType(['noteTypeId' => QubitTerm::GENERAL_NOTE_ID]))) { ?>
+  <?php 'isad' == $template ? $generalNotes = 'app_element_visibility_isad_notes' : $generalNotes = 'app_element_visibility_rad_general_notes'; ?>
+  <?php if (0 < count($notes = ${$resourceVar}->getNotesByType(['noteTypeId' => QubitTerm::GENERAL_NOTE_ID])) && ($sf_user->isAuthenticated() || 1 == sfConfig::get($generalNotes))) { ?>
     <?php foreach ($notes as $note) { ?>
       <note type="generalNote" <?php if (0 < strlen($encoding = $ead->getMetadataParameter('generalNote'))) { ?>encodinganalog="<?php echo $encoding; ?>"<?php } ?>>
         <p><?php echo escape_dc(esc_specialchars($note->getContent(['cultureFallback' => true]))); ?></p>
