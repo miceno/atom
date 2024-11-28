@@ -1,0 +1,135 @@
+name: DAST Scan - Local AtoM
+
+on:
+  pull_request:
+  push:
+    branches:
+    - qa/**
+    - stable/**
+    - dev/owasp-zap-ci
+
+jobs:
+  dynamic-analysis:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+    name: ZAP Baseline Test - local AtoM
+    env:
+      COMPOSE_FILE: ${{ github.workspace }}/docker/docker-compose.dev.yml
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+    - name: Start containerized services
+      run: |
+        sudo sysctl -w vm.max_map_count=262144
+        docker compose up -d percona elasticsearch gearmand
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+        coverage: none
+        extensions: apcu, opcache
+    - name: Setup PHP-FPM
+      run: |
+        sudo apt install php7.4-fpm
+        sudo service php7.4-fpm start
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.composer/cache/files
+        key: 20.04-7.4-composer-${{ hashFiles('composer.lock') }}
+    - name: Install Composer dependencies
+      run: composer install
+    - name: Cache NPM dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          ~/.cache/Cypress
+        key: npm-${{ hashFiles('package-lock.json') }}
+    - name: Install NPM dependencies
+      run: sudo npm install -g npm && npm ci
+    - name: Modify Gearman config
+      run: |
+        echo -e "all:\n  servers:\n    default: 127.0.0.1:63005" \
+          > apps/qubit/config/gearman.yml
+    - name: Build themes
+      run: |
+        sudo npm install -g "less@<4.0.0"
+        make -C plugins/arDominionPlugin
+        make -C plugins/arArchivesCanadaPlugin
+        npm run build
+    - name: Run the installer
+      run: |
+        php symfony tools:install \
+          --database-host=127.0.0.1 \
+          --database-port=63003 \
+          --database-name=atom \
+          --database-user=atom \
+          --database-password=atom_12345 \
+          --search-host=127.0.0.1 \
+          --search-port=63002 \
+          --search-index=atom \
+          --demo \
+          --no-confirmation
+    - name: Change filesystem permissions
+      run: sudo chown -R www-data:www-data ${{ github.workspace }}
+    - name: Start application services
+      run: |
+        sudo cp test/etc/fpm_conf /etc/php/7.4/fpm/pool.d/atom.conf
+        sudo rm /etc/php/7.4/fpm/pool.d/www.conf
+        sudo systemctl restart php7.4-fpm
+        sudo php-fpm7.4 --test
+        sudo cp test/etc/worker_conf /usr/lib/systemd/system/atom-worker.service
+        sudo systemctl daemon-reload
+        sudo systemctl start atom-worker
+    - name: Install and configure Nginx
+      run: |
+        sudo apt install nginx
+        sudo cp test/etc/nginx_conf /etc/nginx/sites-available/atom
+        sudo ln -s /etc/nginx/sites-available/atom /etc/nginx/sites-enabled
+        sudo rm -f /etc/nginx/sites-enabled/default
+        sudo nginx -t
+        sudo systemctl restart nginx
+
+    # # Create a temporary directory for ZAP report to avoid permission issues
+    # - name: Create Temporary Directory for ZAP Report
+    #   run: |
+    #     mkdir -p /tmp/zap
+    #     sudo chmod 777 /tmp/zap
+
+    # # Run OWASP ZAP Baseline Scan using the Docker container
+    # - name: Run OWASP ZAP Baseline Scan (Docker)
+    #   run: |
+    #     HOST_IP=$(hostname -I | awk '{print $1}')
+    #     docker run -v /tmp/zap:/zap/wrk:rw --user root --rm ghcr.io/zaproxy/zaproxy:stable \
+    #       zap-baseline.py -t http://$HOST_IP -r /zap/wrk/zap_report.html -a -l WARN
+
+    # # Upload the ZAP report as an artifact for analysis
+    # - name: Upload ZAP Report
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: zap_report
+    #     path: /tmp/zap/zap_report.html
+
+
+    # Allow write permissions to workspace so ZAP scan can map the files into its container.
+    - name: Change filesystem permissions for ZAP
+      run: |
+        sudo chmod -R a+w ${{ github.workspace }}
+
+    # Get the AtoM host IP address.
+    - name: Run OWASP ZAP Baseline Scan
+      run: |
+        HOST_IP=$(hostname -I | awk '{print $1}')
+        echo "HOST_IP=$HOST_IP" >> $GITHUB_ENV
+        echo "Using HOST_IP: $HOST_IP"
+
+    # Run OWASP ZAP Baseline Scan using the GitHub action with HOST_IP.
+    - name: OWASP ZAP baseline scan
+      uses: zaproxy/action-baseline@v0.14.0
+      with:
+        target: "http://${{ env.HOST_IP }}"
+        docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
+        allow_issue_writing: false
+        cmd_options: '-r report_html.html -l WARN'
