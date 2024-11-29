@@ -33,7 +33,7 @@
 
   <?php } ?>
 
-  <?php if (0 < strlen($value = ${$resourceVar}->getTitle(['cultureFallback' => true]))) { ?>
+  <?php if ('dc' != $defTemplate && 0 < strlen($value = ${$resourceVar}->getTitle(['cultureFallback' => true]))) { ?>
     <unittitle encodinganalog="<?php echo $ead->getMetadataParameter('unittitle'); ?>"><?php echo escape_dc(esc_specialchars($value)); ?></unittitle>
   <?php } ?>
 
@@ -58,7 +58,7 @@
   <?php } ?>
 
   <?php $repository = null; ?>
-  <?php if (0 < strlen(${$resourceVar}->getIdentifier())) { ?>
+  <?php if ('dc' != $defTemplate && 0 < strlen(${$resourceVar}->getIdentifier())) { ?>
     <?php foreach (${$resourceVar}->ancestors->andSelf()->orderBy('rgt') as $item) { ?>
       <?php if (isset($item->repository)) { ?>
         <?php $repository = $item->repository; ?>
@@ -89,7 +89,7 @@
   <?php if ($value = ${$resourceVar}->getRepository(['inherit' => $topLevelDid])) { ?>
     <repository>
       <corpname><?php echo escape_dc(esc_specialchars($value->__toString())); ?></corpname>
-      <?php if ($address = $value->getPrimaryContact()) { ?>
+      <?php if (('mods' != $defTemplate && 'dc' != $defTemplate) && $address = $value->getPrimaryContact()) { ?>
         <address>
           <?php if (0 < strlen($addressline = $address->getStreetAddress())) { ?>
             <addressline><?php echo escape_dc(esc_specialchars($addressline)); ?></addressline>

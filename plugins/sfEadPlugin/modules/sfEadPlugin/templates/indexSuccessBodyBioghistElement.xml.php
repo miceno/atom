@@ -1,5 +1,6 @@
+<?php $defTemplate = sfConfig::get('app_default_template_informationobject'); ?>
 
-<?php if (0 < count($creators)) { ?>
+<?php if (('mods' != $defTemplate && 'dc' != $defTemplate) && 0 < count($creators)) { ?>
   <?php foreach ($events as $date) { ?>
     <?php $creator = QubitActor::getById($date->actorId); ?>
 
