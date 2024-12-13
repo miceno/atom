@@ -2,6 +2,10 @@
 
   <?php include 'indexSuccessBodyPhysloc.xml.php'; ?>
 
+  <?php $defTemplate = sfConfig::get('app_default_template_informationobject'); ?>
+  <?php $template = strtolower(substr($ead->getMetadataParameter('relatedencoding'), 0, 3)); ?>
+  <?php 'isa' == $template ? $template = 'isad' : $template = 'rad'; ?>
+
   <?php if (
     0 < strlen(${$resourceVar}->getPropertyByName('titleProperOfPublishersSeries')->__toString())
     || 0 < strlen(${$resourceVar}->getPropertyByName('parallelTitleOfPublishersSeries')->__toString())
@@ -137,7 +141,6 @@
     </langmaterial>
   <?php } ?>
 
-  <?php $template = $ead->getMetadataParameter('relatedencoding'); ?>
   <?php $controlSources = 'app_element_visibility_'.$template.'_control_sources'; ?>
   <?php if (${$resourceVar}->sources && ($sf_user->isAuthenticated() || 1 == sfConfig::get($controlSources))) { ?>
     <note type="sourcesDescription"><p><?php echo escape_dc(esc_specialchars(${$resourceVar}->sources)); ?></p></note>

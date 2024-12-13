@@ -1,4 +1,6 @@
 <?php $defTemplate = sfConfig::get('app_default_template_informationobject'); ?>
+<?php $template = strtolower(substr($ead->getMetadataParameter('relatedencoding'), 0, 3)); ?>
+<?php 'isa' == $template ? $template = 'isad' : $template = 'rad'; ?>
 
 <?php if (('mods' != $defTemplate && 'dc' != $defTemplate) && 0 < count($creators)) { ?>
   <?php foreach ($events as $date) { ?>

@@ -1,4 +1,6 @@
 <?php $defTemplate = sfConfig::get('app_default_template_informationobject'); ?>
+<?php $template = strtolower(substr($ead->getMetadataParameter('relatedencoding'), 0, 3)); ?>
+<?php 'isa' == $template ? $template = 'isad' : $template = 'rad'; ?>
 <ead>
 <eadheader langencoding="iso639-2b" countryencoding="iso3166-1" dateencoding="iso8601" repositoryencoding="iso15511" scriptencoding="iso15924" relatedencoding="DC">
   <?php echo $ead->renderEadId(); ?>
@@ -85,7 +87,6 @@
   </profiledesc>
 </eadheader>
 
-<?php $template = $ead->getMetadataParameter('relatedencoding'); ?>
 <archdesc <?php echo $ead->renderLOD($resource, $eadLevels); ?> relatedencoding="<?php echo $template; ?>">
   <?php
     $resourceVar = 'resource';
@@ -245,7 +246,7 @@
       <?php } ?>
     </controlaccess>
   <?php } ?>
-  <?php 'isad' == $template ? $physCond = 'app_element_visibility_isad_physical_condition' : $physCond = 'app_element_visibility_dacs_physical_access'; ?>
+  <?php 'isad' == $template ? $physCond = 'app_element_visibility_isad_physical_condition' : $physCond = 'app_element_visibility_rad_physical_access'; ?>
   <?php if (0 < strlen($value = $resource->getPhysicalCharacteristics(['cultureFallback' => true])) && ($sf_user->isAuthenticated() || 1 == sfConfig::get($physCond))) { ?>
     <phystech encodinganalog="<?php echo $ead->getMetadataParameter('phystech'); ?>"><p><?php echo escape_dc(esc_specialchars($value)); ?></p></phystech>
   <?php } ?>
