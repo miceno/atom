@@ -2598,7 +2598,7 @@ class QubitInformationObject extends BaseInformationObject
      *
      * @return string the generated identifier
      */
-    public static function generateIdentiferFromMask()
+    public static function generateIdentifierFromMask()
     {
         $counter = self::getIdentifierCounter();
         $counterValue = $counter->getValue(['sourceCulture' => true]);
