@@ -1,4 +1,23 @@
 <?php
+function prodlog($message = "", $value = "")
+{
+    $logFile = "./log/qubit_prod.log";
+
+    if ($value != null) {
+        $logMessage = $message.": ";
+        if (is_string($value)) {
+            $logMessage .= $value;
+        } elseif (is_bool($value)) {
+            $logMessage .= $value ? 'true' : 'false';
+        } else {
+            $logMessage .= json_encode($value);
+        }
+    } else {
+        $logMessage =json_encode($message);
+    }
+
+    error_log("DEV LOG: " . $logMessage . "\n", 3, $logFile);
+}
 
 /*
  * This file is part of the Access to Memory (AtoM) software.

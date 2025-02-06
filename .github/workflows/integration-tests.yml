@@ -5,6 +5,7 @@ on:
     branches:
     - qa/**
     - stable/**
+    - dev/integration-test-test
 jobs:
   integration-tests:
     runs-on: ubuntu-24.04
@@ -114,7 +115,7 @@ jobs:
         echo 'Print qubit_prod.log'
         sudo tail ${{ github.workspace }}/log/qubit_prod.log
         echo 'Print nginx/error.log'
-        sudo tail /var/log/nginx/error.log
+        sudo tail -n 30 /var/log/nginx/error.log
         echo 'Print php8.3-fpm.log'
         sudo tail /var/log/php8.3-fpm.log
     - name: Upload Cypress Screenshots

@@ -340,6 +340,7 @@ class QubitJob extends BaseJob
 
         // Submit a non-blocking task to Gearman
         $gmClient = new Net_Gearman_Client(arGearman::getServers());
+        prodlog('gearman servers', arGearman::getServers());
         $gmClient->{$jobName}($jobParams);
 
         return $job;

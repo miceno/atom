@@ -232,6 +232,7 @@ class Net_Gearman_Manager
                 'capable_workers' => $capable
             );
         }
+        prodlog('status', $status);
 
         return $status;
     }
