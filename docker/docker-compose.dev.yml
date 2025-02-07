@@ -17,6 +17,7 @@ services:
       - composer_deps:/atom/src/vendor/composer
       - npm_deps:/atom/src/node_modules
       - ..:/atom/src:rw
+      - /Users/orestes/devel/shell-utils/atom-scripts:/mnt/data:rw
 
   atom_worker:
     build: ..
