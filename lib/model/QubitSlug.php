@@ -25,6 +25,7 @@ class QubitSlug extends BaseSlug
     public const SLUG_BASIS_IDENTIFIER = 3;
     public const SLUG_RESTRICTIVE = 0;
     public const SLUG_PERMISSIVE = 1;
+    public const SLUG_INTL = 2;
     public const SLUG_RESTRICTIVE_CHARS = '0-9a-z-';
 
     // From RFC 3987 IRI allowed chars. Not guaranteed to match \p{L}\p{Nd}.
@@ -86,6 +87,17 @@ class QubitSlug extends BaseSlug
                 $slug = preg_replace('/[^'.self::SLUG_PERMISSIVE_CHARS.']+/', '-', $slug);
 
                 break;
+
+            case QubitSlug::SLUG_INTL:
+                // Handle exotic characters gracefully.
+                if (false !== $result = transliterator_transliterate(sfConfig::get('app_intl_transliterate', 'Any-Latin;Latin-ASCII;'), $slug)) {
+                    $slug = $result;
+                }
+
+                $slug = strtolower($slug);
+                // Allow only digits, letters, and dashes.  Replace sequences of other
+                // characters with dash
+                $slug = preg_replace('/[^'.self::SLUG_RESTRICTIVE_CHARS.']+/', '-', $slug);
 
             case QubitSlug::SLUG_RESTRICTIVE:
             default:
