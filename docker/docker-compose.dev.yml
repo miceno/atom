@@ -8,6 +8,7 @@ volumes:
 services:
 
   atom:
+    platform: linux/arm64/v8
     build: ..
     env_file: etc/environment
     environment:
@@ -33,6 +34,7 @@ services:
       - ..:/atom/src:rw
 
   nginx:
+    platform: linux/arm64/v8
     image: nginx:latest
     volumes:
       - composer_deps:/atom/src/vendor/composer
@@ -43,7 +45,8 @@ services:
       - "63001:80"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.23
+    platform: linux/arm64
+    image: webhippie/elasticsearch:6.4
     env_file: etc/environment
     ulimits:
       memlock:
@@ -55,7 +58,8 @@ services:
       - "127.0.0.1:63002:9200"
 
   percona:
-    image: percona:8.0
+    platform: linux/arm64/v8
+    image: percona/percona-server:8.0.35-aarch64
     env_file: etc/environment
     volumes:
       - percona_data:/var/lib/mysql:rw
@@ -64,12 +68,14 @@ services:
       - "127.0.0.1:63003:3306"
 
   memcached:
+    platform: linux/arm64/v8
     image: memcached
     command: -p 11211 -m 128 -u memcache
     ports:
       - "127.0.0.1:63004:11211"
 
   gearmand:
+    platform: linux/arm64/v8
     image: artefactual/gearmand
     ports:
       - "127.0.0.1:63005:4730"
