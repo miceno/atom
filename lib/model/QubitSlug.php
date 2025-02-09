@@ -17,6 +17,10 @@
  * along with Access to Memory (AtoM).  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @author     Orestes Sanchez Benavente <orestes@estotienearreglo.es>
+ */
+
 class QubitSlug extends BaseSlug
 {
     public const SLUG_BASIS_TITLE = 0;

@@ -21,6 +21,7 @@
  * Global form definition for settings module - with validation.
  *
  * @author     David Juhasz <david@artefactual.com>
+ * @author     Orestes Sanchez Benavente <orestes@estotienearreglo.es>
  */
 class SettingsGlobalForm extends sfForm
 {
