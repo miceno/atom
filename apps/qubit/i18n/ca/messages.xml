@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2024-05-17T03:03:51Z" product-name="messages">
+  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2025-02-08T10:00:17Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="f191b2120c9efa7b0c1411d6989e325561707ddb">
@@ -3437,7 +3437,7 @@
       </trans-unit>
       <trans-unit id="e7c3d2225afaba2338575edd35fc684a608bc519">
         <source xml:space="preserve">No. narrower terms</source>
-        <target xml:space="preserve">No. termes espec&#xED;fics</target>
+        <target xml:space="preserve">N&#xFA;mero de termes espec&#xED;fics</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/term/templates/_rightContextMenu.php</note>
       </trans-unit>
       <trans-unit id="6eef6648406c333a4035cd5e60d0bf2ecf2606d7">
@@ -5222,7 +5222,7 @@
       </trans-unit>
       <trans-unit id="ab90d9d736f9e0909b62d0922e0482e4b827449f">
         <source xml:space="preserve">This field is required.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Aquest camp es necessari.</target>
         <note>https://github.com/artefactual/atom/blob/master/lib/form/arB5WidgetFormSchemaFormatter.class.php</note>
       </trans-unit>
       <trans-unit id="423e0daa898ce63fd24668eb17bf7dbd30029f09">
@@ -5347,7 +5347,7 @@
       </trans-unit>
       <trans-unit id="d78dca84fb22f51e97d39c20a021d39026e0b47d">
         <source xml:space="preserve">Treeview</source>
-        <target xml:space="preserve">Vista en forma d'arbre</target>
+        <target xml:space="preserve">Vista en arbre</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/settings/actions/menuComponent.class.php</note>
       </trans-unit>
       <trans-unit id="d90d5b007cad4352601f0b442ef7c72d2735f248">
