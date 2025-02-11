@@ -34,7 +34,7 @@ class SettingsGlobalForm extends sfForm
         $options = [$this->i18n->__('No'), $this->i18n->__('Yes')];
 
         $PHP_MODULE_INTL = false;
-        if( function_exists("transliterator_transliterate")){
+        if (function_exists("transliterator_transliterate")) {
             $PHP_MODULE_INTL = true;
         }
 

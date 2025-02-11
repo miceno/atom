@@ -72,10 +72,9 @@ class QubitSlug extends BaseSlug
     /**
      * Slugify a specified string.
      *
-     * @param string     $slug         The string we want to slugify
-     * @param bool       $dropArticles Whether or not to drop English articles from the slug.
-     *                                 We can disable this when we generate slugs by identifier.
+     * @param string $slug The string we want to slugify
      * @param null|mixed $creationType
+     * @return string
      */
     public static function slugify($slug, $creationType = null)
     {
@@ -102,6 +101,7 @@ class QubitSlug extends BaseSlug
                 // Allow only digits, letters, and dashes.  Replace sequences of other
                 // characters with dash
                 $slug = preg_replace('/[^'.self::SLUG_RESTRICTIVE_CHARS.']+/', '-', $slug);
+                break;
 
             case QubitSlug::SLUG_RESTRICTIVE:
             default:
