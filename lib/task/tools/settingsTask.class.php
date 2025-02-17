@@ -159,6 +159,7 @@ class settingsTask extends arBaseTask
                 }
 
                 $setting->name = $name;
+                $setting->setDeleteable(true);
             } else {
                 throw new Exception("Settings can't be created in strict mode.");
             }
