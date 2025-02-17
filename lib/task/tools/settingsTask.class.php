@@ -71,6 +71,11 @@ class settingsTask extends arBaseTask
                     $this->log(sprintf('Value: %s', $value));
                 }
 
+            case 'delete':
+                $this->log(sprintf('Deleting setting: %s', $arguments['name']));
+
+                $this->deleteOperation($arguments['name'], $options);
+
                 break;
 
             case 'set':
@@ -176,6 +181,19 @@ class settingsTask extends arBaseTask
         return $output;
     }
 
+    public function deleteOperation($name, $options)
+    {
+        $setting = $this->getSetting($name, $options);
+
+        if (!empty($setting)) {
+            if ($setting->isDeleteable()) {
+                $setting->delete();
+            } else {
+                throw new Exception('Settings is not deletable.');
+            }
+        }
+    }
+
     public function getLongestSettingName()
     {
         $longestName = 0;
@@ -211,7 +229,7 @@ class settingsTask extends arBaseTask
     public function validateOptions($arguments, $options)
     {
         // Make sure culture is valid if operation is 'get' or 'set'
-        if (in_array($arguments['operation'], ['get', 'set']) && !sfCultureInfo::validCulture($options['culture'])) {
+        if (in_array($arguments['operation'], ['get', 'set', 'delete']) && !sfCultureInfo::validCulture($options['culture'])) {
             throw new Exception('Culture is invalid.');
         }
 
@@ -269,12 +287,12 @@ class settingsTask extends arBaseTask
             new sfCommandArgument(
                 'operation',
                 sfCommandArgument::REQUIRED,
-                'Setting operation ("get", "set", or "list").'
+                'Setting operation ("get", "set", "delete" or "list").'
             ),
             new sfCommandArgument(
                 'name',
                 sfCommandArgument::OPTIONAL,
-                'Name of setting (for "get" or "set" operation).'
+                'Name of setting (for "get", "set" or "delete" operation).'
             ),
             new sfCommandArgument(
                 'value',
