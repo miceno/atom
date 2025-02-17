@@ -84,7 +84,7 @@ class settingsTask extends arBaseTask
                 break;
 
             case 'list':
-                $this->log($this->listOperation());
+                $this->log($this->listOperation($options));
 
                 break;
 
@@ -162,11 +162,11 @@ class settingsTask extends arBaseTask
         $setting->save();
     }
 
-    public function listOperation()
+    public function listOperation($options)
     {
         $output = '';
 
-        $longestSettingName = $this->getLongestSettingName($options);
+        $longestSettingName = $this->getLongestSettingName();
 
         // Display header
         $output .= str_repeat('-', $longestSettingName + 20)."\n";
@@ -175,7 +175,9 @@ class settingsTask extends arBaseTask
 
         // Display available settings
         foreach ($this->getCurrentSettings() as $setting) {
-            $output .= str_pad($setting['name'], $longestSettingName + 2).$setting['scope']."\n";
+            if (empty($options['scope']) || $setting['scope'] == $options['scope']) {
+                $output .= str_pad($setting['name'], $longestSettingName + 2).$setting['scope']."\n";
+            }
         }
 
         return $output;
