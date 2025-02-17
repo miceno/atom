@@ -67,9 +67,13 @@ class settingsTask extends arBaseTask
             case 'get':
                 $value = $this->getOperation($arguments['name'], $options);
 
-                if (!empty($value)) {
-                    $this->log(sprintf('Value: %s', $value));
+                if (empty($value)) {
+                    $value = 'Empty, off or 0';
                 }
+
+                $this->log(sprintf('Value: %s', $value));
+
+                break;
 
             case 'delete':
                 $this->log(sprintf('Deleting setting: %s', $arguments['name']));
@@ -106,6 +110,8 @@ class settingsTask extends arBaseTask
         } else {
             return $value;
         }
+
+        return $value;
     }
 
     public function setOperation($name, $value, $options = [])
