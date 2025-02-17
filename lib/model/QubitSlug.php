@@ -99,6 +99,8 @@ class QubitSlug extends BaseSlug
                 // characters with dash
                 $slug = preg_replace('/[^'.self::SLUG_RESTRICTIVE_CHARS.']+/', '-', $slug);
 
+                break;
+
             case QubitSlug::SLUG_RESTRICTIVE:
             default:
                 // Handle exotic characters gracefully.
