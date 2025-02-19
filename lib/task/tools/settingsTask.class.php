@@ -67,9 +67,18 @@ class settingsTask extends arBaseTask
             case 'get':
                 $value = $this->getOperation($arguments['name'], $options);
 
-                if (!empty($value)) {
-                    $this->log(sprintf('Value: %s', $value));
+                if (empty($value)) {
+                    $value = 'Empty, off or 0';
                 }
+
+                $this->log(sprintf('Value: %s', $value));
+
+                break;
+
+            case 'delete':
+                $this->log(sprintf('Deleting setting: %s', $arguments['name']));
+
+                $this->deleteOperation($arguments['name'], $options);
 
                 break;
 
@@ -79,7 +88,7 @@ class settingsTask extends arBaseTask
                 break;
 
             case 'list':
-                $this->log($this->listOperation());
+                $this->log($this->listOperation($options));
 
                 break;
 
@@ -101,6 +110,8 @@ class settingsTask extends arBaseTask
         } else {
             return $value;
         }
+
+        return $value;
     }
 
     public function setOperation($name, $value, $options = [])
@@ -148,6 +159,7 @@ class settingsTask extends arBaseTask
                 }
 
                 $setting->name = $name;
+                $setting->setDeleteable(true);
             } else {
                 throw new Exception("Settings can't be created in strict mode.");
             }
@@ -157,11 +169,11 @@ class settingsTask extends arBaseTask
         $setting->save();
     }
 
-    public function listOperation()
+    public function listOperation($options)
     {
         $output = '';
 
-        $longestSettingName = $this->getLongestSettingName($options);
+        $longestSettingName = $this->getLongestSettingName();
 
         // Display header
         $output .= str_repeat('-', $longestSettingName + 20)."\n";
@@ -170,10 +182,25 @@ class settingsTask extends arBaseTask
 
         // Display available settings
         foreach ($this->getCurrentSettings() as $setting) {
-            $output .= str_pad($setting['name'], $longestSettingName + 2).$setting['scope']."\n";
+            if (empty($options['scope']) || $setting['scope'] == $options['scope']) {
+                $output .= str_pad($setting['name'], $longestSettingName + 2).$setting['scope']."\n";
+            }
         }
 
         return $output;
+    }
+
+    public function deleteOperation($name, $options)
+    {
+        $setting = $this->getSetting($name, $options);
+
+        if (!empty($setting)) {
+            if ($setting->isDeleteable()) {
+                $setting->delete();
+            } else {
+                throw new Exception('Settings is not deletable.');
+            }
+        }
     }
 
     public function getLongestSettingName()
@@ -211,7 +238,7 @@ class settingsTask extends arBaseTask
     public function validateOptions($arguments, $options)
     {
         // Make sure culture is valid if operation is 'get' or 'set'
-        if (in_array($arguments['operation'], ['get', 'set']) && !sfCultureInfo::validCulture($options['culture'])) {
+        if (in_array($arguments['operation'], ['get', 'set', 'delete']) && !sfCultureInfo::validCulture($options['culture'])) {
             throw new Exception('Culture is invalid.');
         }
 
@@ -269,12 +296,12 @@ class settingsTask extends arBaseTask
             new sfCommandArgument(
                 'operation',
                 sfCommandArgument::REQUIRED,
-                'Setting operation ("get", "set", or "list").'
+                'Setting operation ("get", "set", "delete" or "list").'
             ),
             new sfCommandArgument(
                 'name',
                 sfCommandArgument::OPTIONAL,
-                'Name of setting (for "get" or "set" operation).'
+                'Name of setting (for "get", "set" or "delete" operation).'
             ),
             new sfCommandArgument(
                 'value',
