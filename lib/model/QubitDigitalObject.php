@@ -2012,7 +2012,7 @@ class QubitDigitalObject extends BaseDigitalObject
 
             $filenameMinusExtension = preg_replace('/\.[a-zA-Z]{2,3}$/', '', $path);
 
-            $command = 'convert -density 300 -alpha remove -quality 100 ';
+            $command = 'magick convert -density 300 -alpha remove -quality 100 ';
             $command .= $path;
             $command .= ' '.$filenameMinusExtension.'_%02d.'.self::THUMB_EXTENSION;
             exec($command, $output, $status);
@@ -2414,7 +2414,7 @@ class QubitDigitalObject extends BaseDigitalObject
      */
     public static function hasImageMagick()
     {
-        $command = 'convert -version';
+        $command = 'magick -version';
         exec($command, $output, $status);
 
         return 0 < count($output) && false !== strpos($output[0], 'ImageMagick');

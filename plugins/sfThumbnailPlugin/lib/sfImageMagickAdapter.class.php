@@ -135,15 +135,15 @@ class sfImageMagickAdapter
     public function __construct($maxWidth, $maxHeight, $scale, $inflate, $quality, $options)
     {
         $this->magickCommands = [];
-        $this->magickCommands['convert'] = isset($options['convert']) ? escapeshellcmd($options['convert']) : 'convert';
+        $this->magickCommands['convert'] = isset($options['convert']) ? escapeshellcmd($options['convert']) : 'magick convert';
         $this->magickCommands['identify'] = isset($options['identify']) ? escapeshellcmd($options['identify']) : 'identify';
 
-        exec($this->magickCommands['convert'], $stdout);
+        exec($this->magickCommands['convert'] . ' -version', $stdout);
         if (false === strpos($stdout[0], 'ImageMagick')) {
             throw new Exception(sprintf('ImageMagick convert command not found'));
         }
 
-        exec($this->magickCommands['identify'], $stdout);
+        exec($this->magickCommands['identify'] . ' -version', $stdout);
         if (false === strpos($stdout[0], 'ImageMagick')) {
             throw new Exception(sprintf('ImageMagick identify command not found'));
         }
