@@ -32,6 +32,11 @@ class SettingsGlobalForm extends sfForm
         $this->i18n = sfContext::getInstance()->i18n;
         $options = [$this->i18n->__('No'), $this->i18n->__('Yes')];
 
+        $PHP_MODULE_INTL = false;
+        if( function_exists("transliterator_transliterate")){
+            $PHP_MODULE_INTL = true;
+        }
+
         // Build widgets
         $this->setWidgets([
             'version' => new sfWidgetFormInput([], ['class' => 'disabled', 'disabled' => true]),
@@ -47,7 +52,7 @@ class SettingsGlobalForm extends sfForm
             'audit_log_enabled' => new sfWidgetFormSelectRadio(['choices' => $options], ['class' => 'radio']),
             'show_tooltips' => new sfWidgetFormSelectRadio(['choices' => $options], ['class' => 'radio']),
             'slug_basis_informationobject' => $this->getSlugBasisInformationObjectWidget(),
-            'permissive_slug_creation' => new sfWidgetFormSelectRadio(['choices' => [QubitSlug::SLUG_PERMISSIVE => $this->i18n->__('Yes'), QubitSlug::SLUG_RESTRICTIVE => $this->i18n->__('No')]], ['class' => 'radio']),
+            'permissive_slug_creation' => new sfWidgetFormSelectRadio(['choices' => array_merge([QubitSlug::SLUG_PERMISSIVE => $this->i18n->__('Yes'), QubitSlug::SLUG_RESTRICTIVE => $this->i18n->__('ASCII iconv')], $PHP_MODULE_INTL ? array(QubitSlug::SLUG_INTL => $this->i18n->__('ASCII intl')):array())], ['class' => 'radio']),
             'defaultPubStatus' => new sfWidgetFormSelectRadio(['choices' => [QubitTerm::PUBLICATION_STATUS_DRAFT_ID => $this->i18n->__('Draft'), QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID => $this->i18n->__('Published')]], ['class' => 'radio']),
             'draft_notification_enabled' => new sfWidgetFormSelectRadio(['choices' => $options], ['class' => 'radio']),
             'sword_deposit_dir' => new sfWidgetFormInput(),

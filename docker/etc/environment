@@ -19,3 +19,6 @@ ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8mb4
 ATOM_MYSQL_USERNAME=atom
 ATOM_MYSQL_PASSWORD=atom_12345
 NODE_ENV=development
+
+
+ELASTICSEARCH_DATA_DIR=/usr/share/elasticsearch/data
