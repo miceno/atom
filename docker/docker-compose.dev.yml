@@ -49,7 +49,7 @@ services:
 
   elasticsearch:
     platform: linux/arm64
-    image: webhippie/elasticsearch:6.4
+    image: webhippie/elasticsearch:5.6
     env_file: etc/environment
     ulimits:
       memlock:
