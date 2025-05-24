@@ -137,7 +137,11 @@ class settingsTask extends arBaseTask
 
     public function getSettingValue($name, $options)
     {
-        $setting = $this->getSetting($name, $options);
+        try {
+            $setting = $this->getSetting($name, $options);
+        } catch (Exception $e) {
+            throw new Exception('Setting does not exist.');
+        }
 
         if (empty($setting)) {
             throw new Exception('Setting does not exist.');

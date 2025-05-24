@@ -12,6 +12,9 @@ require_once 'plugins/arOidcPlugin/config/arOidcPluginConfiguration.class.php';
  */
 class OidcUserTest extends TestCase
 {
+    protected $dispatcher;
+    protected $storage;
+
     public function setUp(): void
     {
         @session_start();
@@ -20,50 +23,6 @@ class OidcUserTest extends TestCase
         $this->dispatcher = new sfEventDispatcher();
         $sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
         $this->storage = new MySessionStorage(['session_path' => $sessionPath]);
-    }
-
-    public function authenticateSuccessProvider()
-    {
-        return [
-            'OIDC authenticate()' => [
-                'redirectUrl' => 'http://127.0.0.1:63001/index.php/oidc/login',
-                'providerId' => 'primary',
-                'providers' => [
-                    'primary' => [
-                        'url' => 'https://keycloak:8443/realms/primary',
-                        'client_id' => 'primary_client_id',
-                        'client_secret' => 'client_secret',
-                        'send_oidc_logout' => true,
-                        'enable_refresh_token_use' => true,
-                        'server_cert' => false,
-                        'set_groups_from_attributes' => true,
-                        'user_groups' => [
-                            'administrator' => [
-                                'attribute_value' => 'atom-admin',
-                                'group_id' => 100,
-                            ],
-                            'editor' => [
-                                'attribute_value' => 'atom-editor',
-                                'group_id' => 101,
-                            ],
-                        ],
-                        'scopes' => [
-                            'openid',
-                            'profile',
-                            'email',
-                        ],
-                        'roles_source' => 'access_token',
-                        'roles_path' => [
-                            'realm_access',
-                            'roles',
-                        ],
-                        'user_matching_source' => 'oidc-email',
-                        'auto_create_atom_user' => true,
-                    ],
-                ],
-                'expected' => true,
-            ],
-        ];
     }
 
     /**
@@ -76,7 +35,6 @@ class OidcUserTest extends TestCase
      */
     public function testAuthenticateSuccess($redirectUrl, $providerId, $providers, $expected)
     {
-        // $client = $this->getMockBuilder(OpenIDConnectClient::class)->setMethods(['authenticate', 'requestUserInfo', 'getIdToken', 'getVerifiedClaims'])->getMock();
         $oidcClientMock = $this->getMockBuilder(OpenIDConnectClient::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -124,6 +82,50 @@ class OidcUserTest extends TestCase
         $result = $user->authenticate();
 
         $this->assertEquals($expected, $result, 'OIDC user authenticate failed.');
+    }
+
+    public function authenticateSuccessProvider()
+    {
+        return [
+            'OIDC authenticate()' => [
+                'redirectUrl' => 'http://127.0.0.1:63001/index.php/oidc/login',
+                'providerId' => 'primary',
+                'providers' => [
+                    'primary' => [
+                        'url' => 'https://keycloak:8443/realms/primary',
+                        'client_id' => 'primary_client_id',
+                        'client_secret' => 'client_secret',
+                        'send_oidc_logout' => true,
+                        'enable_refresh_token_use' => true,
+                        'server_cert' => false,
+                        'set_groups_from_attributes' => true,
+                        'user_groups' => [
+                            'administrator' => [
+                                'attribute_value' => 'atom-admin',
+                                'group_id' => 100,
+                            ],
+                            'editor' => [
+                                'attribute_value' => 'atom-editor',
+                                'group_id' => 101,
+                            ],
+                        ],
+                        'scopes' => [
+                            'openid',
+                            'profile',
+                            'email',
+                        ],
+                        'roles_source' => 'access_token',
+                        'roles_path' => [
+                            'realm_access',
+                            'roles',
+                        ],
+                        'user_matching_source' => 'oidc-email',
+                        'auto_create_atom_user' => true,
+                    ],
+                ],
+                'expected' => true,
+            ],
+        ];
     }
 }
 

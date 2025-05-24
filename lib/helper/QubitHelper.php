@@ -102,7 +102,7 @@ function render_b5_field($field, $translation = null, $options = [])
     $widget = $field->getWidget();
 
     if (
-        in_array($field->type, ['checkbox', 'radio'])
+        in_array($widget->getOption('type'), ['checkbox', 'radio'])
         || $widget instanceof sfWidgetFormSelectRadio
         || (
             $widget instanceof sfWidgetFormChoice
@@ -113,7 +113,7 @@ function render_b5_field($field, $translation = null, $options = [])
         $isFormCheck = true;
         $inputClass = 'form-check-input';
         $labelClass = 'form-check-label';
-    } elseif ('color' == $field->type) {
+    } elseif ('color' == $widget->getOption('type')) {
         $inputClass .= ' form-control-color';
     }
 
@@ -320,7 +320,11 @@ function render_b5_show_value($value, $options = [])
     if (is_array($value) || $value instanceof sfOutputEscaperObjectDecorator || $value instanceof sfOutputEscaperArrayDecorator) {
         $finalValue = '<ul class="'.render_b5_show_list_css_classes().'">';
         foreach ($value as $item) {
-            $finalValue .= '<li>'.$item.'</li>';
+            if (isset($options['renderAsIs'])) {
+                $finalValue .= '<li>'.$item.'</li>';
+            } else {
+                $finalValue .= '<li>'.render_value_html($item).'</li>';
+            }
         }
         $finalValue .= '</ul>';
     }
@@ -773,7 +777,7 @@ function render_autocomplete_string($hit)
     }
 
     if (0 < count($levelOfDescriptionAndIdentifier)) {
-        $string[] = implode($levelOfDescriptionAndIdentifier, ' ');
+        $string[] = implode(' ', $levelOfDescriptionAndIdentifier);
     }
 
     $titleAndPublicationStatus = [];
@@ -787,7 +791,7 @@ function render_autocomplete_string($hit)
     }
 
     if (0 < count($titleAndPublicationStatus)) {
-        $string[] = implode($titleAndPublicationStatus, ' ');
+        $string[] = implode(' ', $titleAndPublicationStatus);
     }
 
     return implode(' - ', $string);
