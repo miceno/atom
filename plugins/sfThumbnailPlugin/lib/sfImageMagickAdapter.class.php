@@ -135,7 +135,7 @@ class sfImageMagickAdapter
     public function __construct($maxWidth, $maxHeight, $scale, $inflate, $quality, $options)
     {
         $this->magickCommands = [];
-        $this->magickCommands['convert'] = isset($options['convert']) ? escapeshellcmd($options['convert']) : 'magick convert';
+        $this->magickCommands['convert'] = isset($options['convert']) ? escapeshellcmd($options['convert']) : 'convert';
         $this->magickCommands['identify'] = isset($options['identify']) ? escapeshellcmd($options['identify']) : 'identify';
 
         exec($this->magickCommands['convert'] . ' -version', $stdout);
