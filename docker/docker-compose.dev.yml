@@ -8,6 +8,7 @@ volumes:
 services:
 
   atom:
+    platform: linux/arm64/v8
     build: ..
     env_file: etc/environment
     environment:
@@ -38,6 +39,7 @@ services:
       - ..:/atom/src:rw
 
   nginx:
+    platform: linux/arm64/v8
     image: nginx:latest
     volumes:
       - composer_deps:/atom/src/vendor/composer
@@ -71,12 +73,14 @@ services:
       - "127.0.0.1:63003:3306"
 
   memcached:
+    platform: linux/arm64/v8
     image: memcached
     command: -p 11211 -m 128 -u memcache
     ports:
       - "127.0.0.1:63004:11211"
 
   gearmand:
+    platform: linux/arm64/v8
     image: artefactual/gearmand
     ports:
       - "127.0.0.1:63005:4730"
