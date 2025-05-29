@@ -56,4 +56,41 @@ maintain two development environments:
 
 Thank you for your interest in contributing to the AtoM project! 
 
-Please see our [contributing guidelines](CONTRIBUTING.md) file for more information. 
+Please see our [contributing guidelines](CONTRIBUTING.md) file for more information.
+
+## XDebug
+
+To configure xdebug support on PHPStorm, follow [this guide](https://medium.com/the-sensiolabs-tech-blog/how-to-use-xdebug-in-docker-phpstorm-76d998ef2534).
+
+Add the following to the `docker-compose.yaml` file:
+```yaml
+services:
+  atom:
+    extra_hosts:
+      host.docker.internal: host-gateway
+    environment:
+      - PHP_IDE_CONFIG=serverName=docker  
+```
+
+Add a server configuration in PHPStorm and set the `name` to the `serverName` in the `docker-compose.yaml` file:
+
+![PHPStorm server name](./docs/phpstorm-server-name.jpg)
+
+Make sure the mapping is properly set:
+
+![PHPStorm server path mappings](./docs/phpstorm-server-mappings.jpg)
+
+
+
+Add the following to the docker `xdebug.ini` file:
+```ini
+zend_extension=xdebug.so
+xdebug.mode=debug
+xdebug.client_host=host.docker.internal
+xdebug.client_port=9003
+xdebug.start_with_request=no
+xdebug.log=/tmp/xdebug.log
+xdebug.log_level=7
+xdebug.idekey=PHPSTORM
+xdebug.discover_client_host=false
+```
