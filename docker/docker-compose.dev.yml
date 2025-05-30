@@ -1,5 +1,5 @@
 ---
-version: "2.1"
+#version: "2.1"
 
 volumes:
   elasticsearch_data:
@@ -10,6 +10,7 @@ volumes:
 services:
 
   atom:
+    platform: linux/arm64/v8
     build: ..
     env_file: etc/environment
     environment:
@@ -18,6 +19,7 @@ services:
       - composer_deps:/atom/src/vendor/composer
       - npm_deps:/atom/src/node_modules
       - ..:/atom/src:rw
+      - /Users/orestes/devel/shell-utils/atom-scripts:/mnt/data:rw
 
   atom_worker:
     build: ..
@@ -35,6 +37,7 @@ services:
       - ..:/atom/src:rw
 
   nginx:
+    platform: linux/arm64/v8
     image: nginx:latest
     volumes:
       - composer_deps:/atom/src/vendor/composer
@@ -45,7 +48,8 @@ services:
       - "63001:80"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+    platform: linux/arm64
+    image: webhippie/elasticsearch:5.6
     env_file: etc/environment
     ulimits:
       memlock:
@@ -57,7 +61,8 @@ services:
       - "127.0.0.1:63002:9200"
 
   percona:
-    image: percona:8.0
+    platform: linux/arm64/v8
+    image: percona/percona-server:8.0.35-aarch64
     env_file: etc/environment
     volumes:
       - percona_data:/var/lib/mysql:rw
@@ -66,12 +71,14 @@ services:
       - "127.0.0.1:63003:3306"
 
   memcached:
+    platform: linux/arm64/v8
     image: memcached
     command: -p 11211 -m 128 -u memcache
     ports:
       - "127.0.0.1:63004:11211"
 
   gearmand:
+    platform: linux/arm64/v8
     image: artefactual/gearmand
     ports:
       - "127.0.0.1:63005:4730"

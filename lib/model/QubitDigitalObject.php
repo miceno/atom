@@ -2017,8 +2017,8 @@ class QubitDigitalObject extends BaseDigitalObject
             $command .= ' '.$filenameMinusExtension.'_%02d.'.self::THUMB_EXTENSION;
             exec($command, $output, $status);
 
-            if (1 == $status) {
-                throw new sfException('Encountered error'.(is_array($output) && count($output) > 0 ? ': '.implode('\n'.$output) : ' ').' while running convert (ImageMagick).');
+            if (0 != $status) {
+                throw new sfException('Encountered error'.(is_array($output) && count($output) > 0 ? ": $status ".implode('\n'.$output) : ' ').' while running convert (ImageMagick).');
             }
 
             // Build an array of the exploded file names
@@ -2414,7 +2414,7 @@ class QubitDigitalObject extends BaseDigitalObject
      */
     public static function hasImageMagick()
     {
-        $command = 'convert -version';
+        $command = 'identify -version';
         exec($command, $output, $status);
 
         return 0 < count($output) && false !== strpos($output[0], 'ImageMagick');

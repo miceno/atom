@@ -334,7 +334,7 @@ class settingsTaskTest extends \PHPUnit\Framework\TestCase
                   ."settingWithTranslation  \n"
                   ."siteTitle               \n";
 
-        $output = $this->task->listOperation();
+        $output = $this->task->listOperation([]);
 
         $this->assertSame($output, $expected);
     }

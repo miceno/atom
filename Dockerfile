@@ -57,6 +57,9 @@ RUN set -xe \
     && ln -sf /usr/share/fop-2.1/fop /usr/local/bin/fop \
     && echo "extension=ldap.so" > /usr/local/etc/php/conf.d/docker-php-ext-ldap.ini
 
+RUN apk add icu-dev --no-cache --virtual .phpext-builddeps \
+    && docker-php-ext-configure intl && docker-php-ext-install intl
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY composer.* /atom/build/
