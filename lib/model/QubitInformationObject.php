@@ -31,6 +31,11 @@ class QubitInformationObject extends BaseInformationObject
     public const ROOT_ID = 1;
 
     // Allow per-object disabling of nested set updating during bulk imports
+    private const int MIN_PADDING_LENGTH = 12;
+    private const DEFAULT_IDENTIFIER = " ";
+    private const PADDING_CHARACTER = '0';
+    private const DEFAULT_ENCODING = 'UTF-8';
+
     public $disableNestedSetUpdating = false;
     // Flag for updating search index on save
     public $indexOnSave = true;
@@ -2309,19 +2314,23 @@ class QubitInformationObject extends BaseInformationObject
                 case 'identifierTitle':
                     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
 
-                    $concatCurrent = $current->__get('identifier') ? str_pad($current->__get('identifier'), 12, '0', STR_PAD_RIGHT) : ' ';
+                    $identifier = $current->__get('identifier');
+                    $paddedIdentifier = $this->getPaddedIdentifier($identifier, STR_PAD_RIGHT);
+
+                    $concatCurrent = $paddedIdentifier;
                     $concatCurrent .= $current->getTitle(['sourceCulture' => true]);
-                    $concatCurrent .= str_pad($current->lft, 12, '0', STR_PAD_LEFT);
+                    $concatCurrent .= str_pad($current->lft, self::MIN_PADDING_LENGTH, '0', STR_PAD_LEFT);
                     $concatCurrent = Propel::getConnection()->quote($concatCurrent);
 
+                    $paddingLength = $this->calculatePaddedLength($identifier);
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
-                            'CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, " "), 12, 0),
-                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> "") THEN current.TITLE ELSE source.TITLE END), ""),
-                            LPAD(lft, 12, 0)), CHAR)
-                            > '.$concatCurrent,
+                            "CONVERT(CONCAT(
+                            RPAD(COALESCE(identifier, \" \"), $paddingLength, ". self::PADDING_CHARACTER ."),
+                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
+                            LPAD(lft, $paddingLength, 0)), CHAR)
+                            > {$concatCurrent}",
                             Criteria::CUSTOM
                         );
 
@@ -2331,11 +2340,11 @@ class QubitInformationObject extends BaseInformationObject
                     } else { // 'previous'
                         $criteria->add(
                             'title',
-                            'CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, " "), 12, 0),
-                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> "") THEN current.TITLE ELSE source.TITLE END), ""),
-                            LPAD(lft, 12, 0)), CHAR)
-                            < '.$concatCurrent,
+                            "CONVERT(CONCAT(
+                            RPAD(COALESCE(identifier, \" \"), $paddingLength, ". self::PADDING_CHARACTER ."),
+                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
+                            LPAD(lft, $paddingLength, 0)), CHAR)
+                            < {$concatCurrent}",
                             Criteria::CUSTOM
                         );
 
@@ -2350,14 +2359,14 @@ class QubitInformationObject extends BaseInformationObject
                     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
 
                     $concatCurrent = $current->getTitle(['sourceCulture' => true]);
-                    $concatCurrent .= str_pad($current->lft, 12, '0', STR_PAD_LEFT);
+                    $concatCurrent .= str_pad($current->lft, self::MIN_PADDING_LENGTH, '0', STR_PAD_LEFT);
                     $concatCurrent = Propel::getConnection()->quote($concatCurrent);
 
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
-                            'CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> "") THEN current.TITLE ELSE source.TITLE END), ""), LPAD(lft, 12, 0)), CHAR)
-                            > '.$concatCurrent,
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, $paddingLength, 0)), CHAR)
+                            > {$concatCurrent}",
                             Criteria::CUSTOM
                         );
 
@@ -2366,8 +2375,8 @@ class QubitInformationObject extends BaseInformationObject
                     } else { // 'previous'
                         $criteria->add(
                             'title',
-                            'CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> "") THEN current.TITLE ELSE source.TITLE END), ""), LPAD(lft, 12, 0)), CHAR)
-                            < '.$concatCurrent,
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, $paddingLength, 0)), CHAR)
+                            < {$concatCurrent}",
                             Criteria::CUSTOM
                         );
 
@@ -2646,6 +2655,22 @@ class QubitInformationObject extends BaseInformationObject
             return parent::updateNestedSet($connection);
         }
     }
+
+    private function calculatePaddedLength(string|null $identifier): int
+    {
+        return max(self::MIN_PADDING_LENGTH, mb_strlen($identifier, self::DEFAULT_ENCODING));
+    }
+
+    protected function getPaddedIdentifier(string|null $identifier, int $padDirection = STR_PAD_RIGHT): string
+    {
+        if (!$identifier) {
+            return self::DEFAULT_IDENTIFIER;
+        }
+
+        $finalPaddingLength = $this->calculatePaddedLength($identifier);
+        return str_pad($identifier, $finalPaddingLength, self::PADDING_CHARACTER, $padDirection);
+    }
+
 
     protected function getDefaultDateValue($date)
     {
