@@ -59,6 +59,8 @@ class DigitalObjectImageflowComponent extends sfComponent
 
         // Hide drafts
         $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
+        $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
+        $criteria->addAscendingOrderByColumn(QubitInformationObject::IDENTIFIER);
 
         foreach (QubitDigitalObject::get($criteria) as $item) {
             if (QubitTerm::OFFLINE_ID == $item->usageId) {
