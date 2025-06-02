@@ -33,7 +33,7 @@ class QubitInformationObject extends BaseInformationObject
     // Minimal padding length for treeview queries.
     private const int MIN_PADDING_LENGTH = 12;
     // Default identifier when there is no identifier for treeview queries.
-    private const DEFAULT_IDENTIFIER = " ";
+    private const DEFAULT_IDENTIFIER = ' ';
     // Default padding char for treeview queries.
     private const PADDING_CHARACTER = '0';
 
@@ -2329,9 +2329,9 @@ class QubitInformationObject extends BaseInformationObject
                         $criteria->add(
                             'title',
                             "CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, \" \"), $paddingLength, ". self::PADDING_CHARACTER ."),
+                            RPAD(COALESCE(identifier, \" \"), {$paddingLength}, ".self::PADDING_CHARACTER."),
                             COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
-                            LPAD(lft, $paddingLength, 0)), CHAR)
+                            LPAD(lft, {$paddingLength}, 0)), CHAR)
                             > {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2343,9 +2343,9 @@ class QubitInformationObject extends BaseInformationObject
                         $criteria->add(
                             'title',
                             "CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, \" \"), $paddingLength, ". self::PADDING_CHARACTER ."),
+                            RPAD(COALESCE(identifier, \" \"), {$paddingLength}, ".self::PADDING_CHARACTER."),
                             COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
-                            LPAD(lft, $paddingLength, 0)), CHAR)
+                            LPAD(lft, {$paddingLength}, 0)), CHAR)
                             < {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2367,7 +2367,7 @@ class QubitInformationObject extends BaseInformationObject
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, $paddingLength, 0)), CHAR)
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$paddingLength}, 0)), CHAR)
                             > {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2377,7 +2377,7 @@ class QubitInformationObject extends BaseInformationObject
                     } else { // 'previous'
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, $paddingLength, 0)), CHAR)
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$paddingLength}, 0)), CHAR)
                             < {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2658,7 +2658,7 @@ class QubitInformationObject extends BaseInformationObject
         }
     }
 
-    protected function getPaddedIdentifier(string|null $identifier, int $padDirection = STR_PAD_RIGHT): string
+    protected function getPaddedIdentifier(?string $identifier, int $padDirection = STR_PAD_RIGHT): string
     {
         if (!$identifier) {
             $identifier = self::DEFAULT_IDENTIFIER;
@@ -2666,7 +2666,6 @@ class QubitInformationObject extends BaseInformationObject
 
         return str_pad($identifier, self::MIN_PADDING_LENGTH, self::PADDING_CHARACTER, $padDirection);
     }
-
 
     protected function getDefaultDateValue($date)
     {
