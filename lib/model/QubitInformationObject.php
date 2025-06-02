@@ -30,12 +30,14 @@ class QubitInformationObject extends BaseInformationObject
 {
     public const ROOT_ID = 1;
 
-    // Allow per-object disabling of nested set updating during bulk imports
-    private const int MIN_PADDING_LENGTH = 12;
+    // Minimal padding length for treeview queries.
+    private const int MIN_PADDING_LENGTH = 2;
+    // Default identifier when there is no identifier for treeview queries.
     private const DEFAULT_IDENTIFIER = " ";
+    // Default padding char for treeview queries.
     private const PADDING_CHARACTER = '0';
-    private const DEFAULT_ENCODING = 'UTF-8';
 
+    // Allow per-object disabling of nested set updating during bulk imports
     public $disableNestedSetUpdating = false;
     // Flag for updating search index on save
     public $indexOnSave = true;
@@ -2322,7 +2324,7 @@ class QubitInformationObject extends BaseInformationObject
                     $concatCurrent .= str_pad($current->lft, self::MIN_PADDING_LENGTH, '0', STR_PAD_LEFT);
                     $concatCurrent = Propel::getConnection()->quote($concatCurrent);
 
-                    $paddingLength = $this->calculatePaddedLength($identifier);
+                    $paddingLength = self::MIN_PADDING_LENGTH;
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
@@ -2656,19 +2658,13 @@ class QubitInformationObject extends BaseInformationObject
         }
     }
 
-    private function calculatePaddedLength(string|null $identifier): int
-    {
-        return max(self::MIN_PADDING_LENGTH, mb_strlen($identifier, self::DEFAULT_ENCODING));
-    }
-
     protected function getPaddedIdentifier(string|null $identifier, int $padDirection = STR_PAD_RIGHT): string
     {
         if (!$identifier) {
-            return self::DEFAULT_IDENTIFIER;
+            $identifier = self::DEFAULT_IDENTIFIER;
         }
 
-        $finalPaddingLength = $this->calculatePaddedLength($identifier);
-        return str_pad($identifier, $finalPaddingLength, self::PADDING_CHARACTER, $padDirection);
+        return str_pad($identifier, self::MIN_PADDING_LENGTH, self::PADDING_CHARACTER, $padDirection);
     }
 
 
