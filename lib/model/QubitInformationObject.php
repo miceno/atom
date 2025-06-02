@@ -36,6 +36,8 @@ class QubitInformationObject extends BaseInformationObject
     private const DEFAULT_IDENTIFIER = " ";
     // Default padding char for treeview queries.
     private const PADDING_CHARACTER = '0';
+    // Query limit for treeview requests.
+    private const int TREEVIEW_QUERY_LIMIT = 5;
 
     // Allow per-object disabling of nested set updating during bulk imports
     public $disableNestedSetUpdating = false;
@@ -2281,7 +2283,7 @@ class QubitInformationObject extends BaseInformationObject
     {
         // The max number of items that will be shown
         // The final amount may be smaller if there are no result enough
-        $limit = 5;
+        $limit = self::TREEVIEW_QUERY_LIMIT;
         if (isset($options['limit'])) {
             $limit = $options['limit'];
         }
