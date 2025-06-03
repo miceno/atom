@@ -25,6 +25,7 @@
  * @author David Juhasz <david@artefactual.com>
  * @author Mathieu Fortin Library and Archives Canada <mathieu.fortin@lac-bac.gc.ca>
  * @author Mark Triggs, Teaspoon Consulting Pty Ltd <mark@teaspoon-consulting.com>
+ * @author Orestes Sanchez, <orestes@estotienearreglo.es>
  */
 class QubitInformationObject extends BaseInformationObject
 {
