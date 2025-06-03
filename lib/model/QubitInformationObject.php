@@ -25,13 +25,16 @@
  * @author David Juhasz <david@artefactual.com>
  * @author Mathieu Fortin Library and Archives Canada <mathieu.fortin@lac-bac.gc.ca>
  * @author Mark Triggs, Teaspoon Consulting Pty Ltd <mark@teaspoon-consulting.com>
+ * @author Orestes Sanchez, <orestes@estotienearreglo.es>
  */
 class QubitInformationObject extends BaseInformationObject
 {
     public const ROOT_ID = 1;
 
-    // Minimal padding length for treeview queries.
-    private const int MIN_PADDING_LENGTH = 12;
+    // Minimal padding length for text on treeview queries, set this number above NUMBER_PADDING_LENGTH
+    private const int TEXT_PADDING_LENGTH = 25;
+    // Minimal padding length for numbers on treeview queries, set this number below TEXT_PADDING_LENGTH
+    private const int NUMBER_PADDING_LENGTH = 12;
     // Default identifier when there is no identifier for treeview queries.
     private const DEFAULT_IDENTIFIER = ' ';
     // Default padding char for treeview queries.
@@ -2323,18 +2326,21 @@ class QubitInformationObject extends BaseInformationObject
 
                     $concatCurrent = $paddedIdentifier;
                     $concatCurrent .= $current->getTitle(['sourceCulture' => true]);
-                    $concatCurrent .= str_pad($current->lft, self::MIN_PADDING_LENGTH, '0', STR_PAD_LEFT);
+                    $concatCurrent .= str_pad($current->lft, self::NUMBER_PADDING_LENGTH, '0', STR_PAD_LEFT);
                     $concatCurrent = Propel::getConnection()->quote($concatCurrent);
 
-                    $paddingLength = self::MIN_PADDING_LENGTH;
+                    $textPaddingLength = self::TEXT_PADDING_LENGTH;
+                    $numberPaddingLength = self::NUMBER_PADDING_LENGTH;
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, \" \"), {$paddingLength}, ".self::PADDING_CHARACTER."),
-                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
-                            LPAD(lft, {$paddingLength}, 0)), CHAR)
-                            > {$concatCurrent}",
+                            sprintf(
+                                "CONVERT(CONCAT(RPAD(COALESCE(identifier, ' '), %d, '%s'), COALESCE(CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> '') THEN current.TITLE ELSE source.TITLE END, ''), LPAD(lft, %d, '0')), CHAR) > %s",
+                                self::TEXT_PADDING_LENGTH,
+                                self::PADDING_CHARACTER,
+                                self::NUMBER_PADDING_LENGTH,
+                                $concatCurrent
+                            ),
                             Criteria::CUSTOM
                         );
 
@@ -2344,11 +2350,13 @@ class QubitInformationObject extends BaseInformationObject
                     } else { // 'previous'
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(
-                            RPAD(COALESCE(identifier, \" \"), {$paddingLength}, ".self::PADDING_CHARACTER."),
-                            COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"),
-                            LPAD(lft, {$paddingLength}, 0)), CHAR)
-                            < {$concatCurrent}",
+                            sprintf(
+                                "CONVERT(CONCAT(RPAD(COALESCE(identifier, ' '), %d, '%s'), COALESCE(CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> '') THEN current.TITLE ELSE source.TITLE END, ''), LPAD(lft, %d, '0')), CHAR) < %s",
+                                self::TEXT_PADDING_LENGTH,
+                                self::PADDING_CHARACTER,
+                                self::NUMBER_PADDING_LENGTH,
+                                $concatCurrent
+                            ),
                             Criteria::CUSTOM
                         );
 
@@ -2363,13 +2371,13 @@ class QubitInformationObject extends BaseInformationObject
                     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
 
                     $concatCurrent = $current->getTitle(['sourceCulture' => true]);
-                    $concatCurrent .= str_pad($current->lft, self::MIN_PADDING_LENGTH, '0', STR_PAD_LEFT);
+                    $concatCurrent .= str_pad($current->lft, self::TEXT_PADDING_LENGTH, '0', STR_PAD_LEFT);
                     $concatCurrent = Propel::getConnection()->quote($concatCurrent);
 
                     if ('next' == $position) {
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$paddingLength}, 0)), CHAR)
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$numberPaddingLength}, 0)), CHAR)
                             > {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2379,7 +2387,7 @@ class QubitInformationObject extends BaseInformationObject
                     } else { // 'previous'
                         $criteria->add(
                             'title',
-                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$paddingLength}, 0)), CHAR)
+                            "CONVERT(CONCAT(COALESCE((CASE WHEN (current.TITLE IS NOT NULL AND current.TITLE <> \"\") THEN current.TITLE ELSE source.TITLE END), \"\"), LPAD(lft, {$numberPaddingLength}, 0)), CHAR)
                             < {$concatCurrent}",
                             Criteria::CUSTOM
                         );
@@ -2666,7 +2674,7 @@ class QubitInformationObject extends BaseInformationObject
             $identifier = self::DEFAULT_IDENTIFIER;
         }
 
-        return str_pad($identifier, self::MIN_PADDING_LENGTH, self::PADDING_CHARACTER, $padDirection);
+        return str_pad($identifier, self::TEXT_PADDING_LENGTH, self::PADDING_CHARACTER, $padDirection);
     }
 
     protected function getDefaultDateValue($date)
