@@ -32,7 +32,7 @@ class QubitInformationObject extends BaseInformationObject
     public const ROOT_ID = 1;
 
     // Minimal padding length for text on treeview queries, set this number above NUMBER_PADDING_LENGTH
-    private const int TEXT_PADDING_LENGTH = 25;
+    private const int TEXT_PADDING_LENGTH = 33;
     // Minimal padding length for numbers on treeview queries, set this number below TEXT_PADDING_LENGTH
     private const int NUMBER_PADDING_LENGTH = 12;
     // Default identifier when there is no identifier for treeview queries.
