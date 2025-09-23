@@ -47,7 +47,7 @@ all:
   # same Gearman server, in which case, each instance's workers_key must be set
   # to a different string value to make sure the proper workers take the job for
   # their related instance.
-  workers_key:
+  workers_key: atom
 
   # Specify password_hash algorithm constant
   # See: https://www.php.net/manual/en/password.constants.php
