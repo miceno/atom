@@ -1,3 +1,4 @@
+<?php /*>
 <div class="table-responsive mb-3">
   <table class="table table-bordered mb-0 compound_digiobj">
     <tbody>
@@ -36,3 +37,4 @@
 </div>
 
 <?php echo get_partial('default/pager', ['pager' => $pager]); ?>
+<?php */ ?>
