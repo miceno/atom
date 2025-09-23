@@ -59,6 +59,7 @@ all:
 
   # Maximum allowed value for full-width treeview "items per page" setting
   treeview_items_per_page_max: 10000
+  default_timezone: Europe/Madrid
 
   # Content Security Policy (CSP) header configuration. CSP settings are used
   # only when a B5 theme is in use, otherwise these settings will be ignored.
