@@ -16,6 +16,7 @@
   <?php } ?>
 <?php } else { ?>
   <?php /* ?>
+  <?php */ ?>
   <div class="digital-object-reference text-center<?php echo $editForm
       ? ''
       : ' p-3 border-bottom'; ?>">
@@ -32,6 +33,4 @@
       ]); ?>
     <?php } ?>
   </div>
-  */
-    ?>
 <?php } ?>
