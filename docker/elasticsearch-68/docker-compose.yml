@@ -15,4 +15,4 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - "127.0.0.1:63200:9200"
-
+    restart: unless-stopped
