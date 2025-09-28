@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="en" target-language="sr" datatype="plaintext" original="messages" date="2025-05-06T21:02:35Z" product-name="messages">
+  <file source-language="en" target-language="sr" datatype="plaintext" original="messages" date="2025-09-26T19:34:45Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
@@ -26,23 +26,11 @@
       </trans-unit>
       <trans-unit id="6">
         <source>Date(s) - are not consistent with %1%higher levels%2%.</source>
-        <target>Датум(и) - нису усаглашени са %1% вишим нивоима%2%</target>
-      </trans-unit>
-      <trans-unit id="7">
-        <source>Physical description - This is a mandatory element.</source>
-        <target>Физички опис - Ово је обавезно поље.</target>
-      </trans-unit>
-      <trans-unit id="8">
-        <source>Title - This is a mandatory element.</source>
-        <target>Назив јединице описа - Ово је обавезно поље</target>
+        <target>Датум(и) - нису усаглашени са %1% вишим нивоима%2%.</target>
       </trans-unit>
       <trans-unit id="9">
         <source>Level of description - Value "%value%" is not consistent with higher levels.</source>
         <target>Ниво описа - Вредност "%вредност%" није усаглашена са вишим нивоима</target>
-      </trans-unit>
-      <trans-unit id="10">
-        <source>Level of description - This is a mandatory element.</source>
-        <target>Ниво описа - ово је обавезно поље.</target>
       </trans-unit>
       <trans-unit id="11">
         <source>Statement of scale (architectural) - This is a mandatory element for architectural drawing.</source>
@@ -64,10 +52,6 @@
         <source>Issuing jurisdiction and denomination (philatelic) - This is a mandatory element for philatelic record.</source>
         <target>Надлежност издавања и номинална вредност (филателистички) - Ово је обавезно поље за филателистички запис</target>
       </trans-unit>
-      <trans-unit id="16">
-        <source>Scope and content - This is a mandatory element.</source>
-        <target>Оквир и садржај - Ово је обавезно поље</target>
-      </trans-unit>
       <trans-unit id="17">
         <source>Edition statement - This is a mandatory element for published items if there are multiple editions.</source>
         <target>Податак о издању - ово је обавезно поље за објављене јединице ако постоји више издања.</target>
@@ -82,11 +66,11 @@
       </trans-unit>
       <trans-unit id="20">
         <source>"Give the date(s) of creation of the unit being described either as a single date, or range of dates (for inclusive dates and/or predominant dates). Always give the inclusive dates. When providing predominant dates, specify them as such, preceded by the word predominant..." (RAD 1.4B2) Record probable and uncertain dates in square brackets, using the conventions described in 1.4B5.</source>
-        <target>"Навести датум(е) стварања јединице која се описује било као јединствени датум или временски опсег (за граничне године и/или претежне године). Увек навести граничне године. Када се наводе претежне године, назначити их као такве, тако што ће да им претходи реч претежне..."(RAD 1.4B2) Навести претпостављене и несигурне датуме у угластим заградама, употребљавајући правило описано у  1.4B5.</target>
+        <target>"Навести датум(е) стварања јединице која се описује било као јединствени датум или временски опсег (за граничне године и/или претежне године). Увек навести граничне године. Када се наводе претежне године, назначити их као такве, тако што ће да им претходи реч претежне..."(RAD 1.4B2) Навести претпостављене и несигурне датуме у угластим заградама, употребљавајући правило описано у 1.4B5.</target>
       </trans-unit>
       <trans-unit id="21">
         <source>"Make notes on dates and any details pertaining to the dates of creation, publication, or distribution, of the unit being described that are not included in the Date(s) of creation, including publication, distribution, etc., area and that are considered to be important." (RAD 1.8B8) "Make notes on the date(s) of accumulation or collection of the unit being described." (RAD 1.8B8a)</source>
-        <target>"Унети напомену о датумима и другим детаљима који се тичу датума стварања, публиковања или дистрибуције јединице која се описује, а који нису укључени у Датум(е) стварања, укључујући подручје публиковања, дистрибуције и сл., а који се сматрају важним." (RAD 1.8B8) "Напоменути датум(е) сабирања или сакупљања јединице која се описује."  (RAD 1.8B8a)</target>
+        <target>"Унети напомену о датумима и другим детаљима који се тичу датума стварања, публиковања или дистрибуције јединице која се описује, а који нису укључени у Датум(е) стварања, укључујући подручје публиковања, дистрибуције и сл., а који се сматрају важним." (RAD 1.8B8) "Напоменути датум(е) сабирања или сакупљања јединице која се описује." (RAD 1.8B8a)</target>
       </trans-unit>
       <trans-unit id="22">
         <source>Select the type of activity that established the relation between the authority record and the archival description (e.g. creation, accumulation, collection, publication, etc.)</source>
@@ -108,10 +92,6 @@
         <source>Title proper</source>
         <target>Стварни наслов</target>
       </trans-unit>
-      <trans-unit id="27">
-        <source>This is a mandatory element.</source>
-        <target>Ово је обавезно поље.</target>
-      </trans-unit>
       <trans-unit id="28">
         <source>Select the General Material Designation at the highest level of description. If there are more than three, select "multiple media" (RAD 1.1C)</source>
         <target>Изаберати општу ознаку грађе у највишем нивоу описа. Ако их има више од три, изаберати "вишеврсни медији" (RAD 1.1C)</target>
@@ -122,7 +102,7 @@
       </trans-unit>
       <trans-unit id="30">
         <source>"[W]hen applicable, transcribe parallel titles that appear in conjunction with the formal title proper..." (RAD 1.1D)</source>
-        <target>"Кад је могуће, дословно пренети упоредне наслове када се појављују у вези са стварним  насловом..." (RAD 1.1D)</target>
+        <target>"Кад је могуће, дословно пренети упоредне наслове када се појављују у вези са стварним насловом..." (RAD 1.1D)</target>
       </trans-unit>
       <trans-unit id="31">
         <source>Parallel titles</source>
@@ -174,7 +154,7 @@
       </trans-unit>
       <trans-unit id="43">
         <source>"Use this area only in item level description to record statements relating to versions of items existing in two or more versions or states in single or multiple copies." (RAD 1.2A1) "Transcribe the edition statement relating to the item being described." (RAD 1.2B1) "If the item being described lacks an edition statement but is known to contain significant changes from other editions, supply a suitable brief statement in the language and script of the title proper and enclose it in square brackets." (RAD 1.2B3)</source>
-        <target>"Користити ово поље само на нивоу описа документа да се назначе подаци који се односе на постојање две или више верзија или једног или више примерака."  (RAD 1.2A1) "Дословно пренети податак о издању који се односи на јединицу која се описује."  (RAD 1.2B1) "Ако јединица која се описује нема податак о издању, али је познато да постоје значајне разлике у односу на друга издања, додати кратак податак на језику и писму главног стварног наслова у угластим заградама." (RAD 1.2B3)</target>
+        <target>"Користити ово поље само на нивоу описа документа да се назначе подаци који се односе на постојање две или више верзија или једног или више примерака." (RAD 1.2A1) "Дословно пренети податак о издању који се односи на јединицу која се описује." (RAD 1.2B1) "Ако јединица која се описује нема податак о издању, али је познато да постоје значајне разлике у односу на друга издања, додати кратак податак на језику и писму главног стварног наслова у угластим заградама." (RAD 1.2B3)</target>
       </trans-unit>
       <trans-unit id="44">
         <source>Edition statement</source>
@@ -182,7 +162,7 @@
       </trans-unit>
       <trans-unit id="45">
         <source>"Transcribe a statement of responsibility relating to one or more editions, but not to all editions, of the item being described following the edition statement if there is one." (RAD 1.2.C1) "When describing the first edition, give all statements of responsibility in the Title and statement of responsibility area." (RAD 1.2C2)</source>
-        <target>"Дословно пренети податак о одговорности, који се односи на једно или више издања, али не и на сва издања јединице која се описује, уколико такав податак постоји."  (RAD 1.2.C1) "Када се описује прво издање, навести све податке о одговорности у Подручје наслова и података о одговорности." (RAD 1.2C2)</target>
+        <target>"Дословно пренети податак о одговорности, који се односи на једно или више издања, али не и на сва издања јединице која се описује, уколико такав податак постоји." (RAD 1.2.C1) "Када се описује прво издање, навести све податке о одговорности у Подручје наслова и података о одговорности." (RAD 1.2C2)</target>
       </trans-unit>
       <trans-unit id="46">
         <source>Statement of responsibility relating to the edition</source>
@@ -194,7 +174,7 @@
       </trans-unit>
       <trans-unit id="48">
         <source>"Give the scale of the unit being described...as a representative fraction (RF) expressed as a ratio (1: ). Precede the ratio by Scale. Give the scale even if it is already recorded as part of the title proper or other title information." (RAD 5.3B1)</source>
-        <target>"Навести размеру јединице описа изражену у односу (1: ). Односу треба да претходи реч Размера. Навести размеру чак и ако је већ наведена као део стварног  наслова или у подацима уз наслов." (RAD 5.3B1)</target>
+        <target>"Навести размеру јединице описа изражену у односу (1: ). Односу треба да претходи реч Размера. Навести размеру чак и ако је већ наведена као део стварног наслова или у подацима уз наслов." (RAD 5.3B1)</target>
       </trans-unit>
       <trans-unit id="49">
         <source>Statement of scale (cartographic)</source>
@@ -236,10 +216,6 @@
         <source>Dates of creation area</source>
         <target>Подручје датума стварања</target>
       </trans-unit>
-      <trans-unit id="59">
-        <source>Add new name and/or date(s)</source>
-        <target>Додај нови назив/име и/или датум(е)</target>
-      </trans-unit>
       <trans-unit id="60">
         <source>Physical description area</source>
         <target>Подручје физичког описа</target>
@@ -274,7 +250,7 @@
       </trans-unit>
       <trans-unit id="68">
         <source>"Transcribe other title information of a publisher's series as instructed in 1.1E and only if considered necessary for identifying the publisher's series." (RAD 1.6D1)</source>
-        <target>"Дословно пренети податке уз наслов издавачке целине као што је назначено у 1.1Е само ако се сматрају неопходним за идентификацију издавачке целине." (RAD 1.6D1) </target>
+        <target>"Дословно пренети податке уз наслов издавачке целине као што је назначено у 1.1Е само ако се сматрају неопходним за идентификацију издавачке целине." (RAD 1.6D1)</target>
       </trans-unit>
       <trans-unit id="69">
         <source>Other title information of publisher's series</source>
@@ -308,13 +284,9 @@
         <source>Archival description area</source>
         <target>Подручје архивског описа</target>
       </trans-unit>
-      <trans-unit id="77">
-        <source>Edit authority record</source>
-        <target>Уреди нормативни запис</target>
-      </trans-unit>
       <trans-unit id="78">
         <source>"Give the history of the custody of the unit being described, i.e., the successive transfers of ownership and custody or control of the material, along with the dates thereof, insofar as it can be ascertained." (RAD 1.7C)</source>
-        <target>"Навести историјат старања над јединицом која се описује тј. сукцесиван пренос власништва и старања или контроле над грађом, као и датуме од-до ако се могу установити." (RAD 1.7C) </target>
+        <target>"Навести историјат старања над јединицом која се описује тј. сукцесиван пренос власништва и старања или контроле над грађом, као и датуме од-до ако се могу установити." (RAD 1.7C)</target>
       </trans-unit>
       <trans-unit id="79">
         <source>Custodial history</source>
@@ -322,7 +294,7 @@
       </trans-unit>
       <trans-unit id="80">
         <source>"At the fonds, series, and collection levels of description, and when necessary at the file and the item levels of description, indicate the level being described and give information about the scope and the internal structure of or arrangement of the records, and about their contents." (RAD 1.7D) "For the scope of the unit being described, give information about the functions and/or kinds of activities generating the records, the period of time, the subject matter, and the geographical area to which they pertain. For the content of the unit being described, give information about its internal structure by indicating its arrangement, organization, and/or enumerating its next lowest level of description. Summarize the principal documentary forms (e.g., reports, minutes, correspondence, drawings, speeches)." (RAD 1.7D1)</source>
-        <target>"На нивоу описа фонда, серије или збирке и када је неопходно нивоу досијеа или документа, уписати који се ниво описује и дати информације о оквиру и унутрашњој структури грађе, као и о садржају." (RAD 1.7D) "За оквир јединице која се описује дати информације о функцијама и/или активностима, временском периоду, предмету, као и географском простору на који се грађа односи. За садржај јединице која се описује, дати информације о унутрашњој структури наводећи начин сређивања, организацију,  и/ли наводећи следећи нижи ниво описа. Назначити основну документарну форму грађе (нпр. извештаји, белешке, преписка, цртежи, говори)." (RAD 1.7D1)</target>
+        <target>"На нивоу описа фонда, серије или збирке и када је неопходно нивоу досијеа или документа, уписати који се ниво описује и дати информације о оквиру и унутрашњој структури грађе, као и о садржају." (RAD 1.7D) "За оквир јединице која се описује дати информације о функцијама и/или активностима, временском периоду, предмету, као и географском простору на који се грађа односи. За садржај јединице која се описује, дати информације о унутрашњој структури наводећи начин сређивања, организацију, и/ли наводећи следећи нижи ниво описа. Назначити основну документарну форму грађе (нпр. извештаји, белешке, преписка, цртежи, говори)." (RAD 1.7D1)</target>
       </trans-unit>
       <trans-unit id="81">
         <source>Scope and content</source>
@@ -342,7 +314,7 @@
       </trans-unit>
       <trans-unit id="85">
         <source>"Record the donor or source (i.e., the immediate prior custodian) from whom the unit being described was acquired, and the date and method of acquisition, as well as the source/donor's relationship to the material, if any or all of this information is not confidential. If the source/donor is unknown, record that information." (RAD 1.8B12)</source>
-        <target>"Навести предаваоца или извор грађе од којег је једница која се описује набављена (тј. непосредно пред старањем), датум и начин набавке, као и везу извора/предаваоца са архивском грађом, ако једна од или све такве информације нису поверљиве. Ако је извор/предавалац грађе непознат, навести ту информацију:" RAD 1.8B12) </target>
+        <target>"Навести предаваоца или извор грађе од којег је једница која се описује набављена (тј. непосредно пред старањем), датум и начин набавке, као и везу извора/предаваоца са архивском грађом, ако једна од или све такве информације нису поверљиве. Ако је извор/предавалац грађе непознат, навести ту информацију:" RAD 1.8B12)</target>
       </trans-unit>
       <trans-unit id="86">
         <source>Immediate source of acquisition</source>
@@ -426,7 +398,7 @@
       </trans-unit>
       <trans-unit id="106">
         <source>"When the unit being described is not yet complete, e.g., an open fonds or series, make a note explaining that further accruals are expected... If no further accruals are expected, indicate that the unit is considered closed." (RAD 1.8B19)</source>
-        <target>"Када се описује јединица која  још није комплетна, нпр. отворени фонд или серија, у напомени објаснити да се очекују допуне... Ако се допуне не очекују, назначити да се јединица сматра затвореном." (RAD 1.8B19)</target>
+        <target>"Када се описује јединица која још није комплетна, нпр. отворени фонд или серија, у напомени објаснити да се очекују допуне... Ако се допуне не очекују, назначити да се јединица сматра затвореном." (RAD 1.8B19)</target>
       </trans-unit>
       <trans-unit id="107">
         <source>Standard number area</source>
@@ -470,7 +442,7 @@
       </trans-unit>
       <trans-unit id="117">
         <source>"Choose provenance, author and other non-subject access points from the archival description, as appropriate. All access points must be apparent from the archival description to which they relate." (RAD 21.0B) The values in this field are drawn from the Authorized form of name field in authority records. Search for an existing name by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record.</source>
-        <target>"Изабрати провенијенцију, аутора и друге погодне  приступне тачке из архивског описа које нису предметне одреднице. Све приступне тачке морају бити очигледне у архивском опису на који се односе." (RAD 21.0B) Вредности у овом пољу се повлаче из поља Званичног облика имена у нормативним записима. Потражити да ли назив/име постоји у нормативном запису уношењем првих неколико слова назива/имена. Алтернативно, унети нови назив/име за креирање новог нормативног записа.</target>
+        <target>"Изабрати провенијенцију, аутора и друге погодне приступне тачке из архивског описа које нису предметне одреднице. Све приступне тачке морају бити очигледне у архивском опису на који се односе." (RAD 21.0B) Вредности у овом пољу се повлаче из поља Званичног облика имена у нормативним записима. Потражити да ли назив/име постоји у нормативном запису уношењем првих неколико слова назива/имена. Алтернативно, унети нови назив/име за креирање новог нормативног записа.</target>
       </trans-unit>
       <trans-unit id="118">
         <source>Control area</source>
@@ -528,17 +500,9 @@
         <source>Indicate the language(s) used to create the description of the archival material.</source>
         <target>Назначити језик(е) коришћен(е) у опису архивске грађе.</target>
       </trans-unit>
-      <trans-unit id="132">
-        <source>Language</source>
-        <target>Језик</target>
-      </trans-unit>
       <trans-unit id="133">
         <source>Indicate the script(s) used to create the description of the archival material.</source>
         <target>Назначити писмо(а) коришћено(а) у опису архивске грађе.</target>
-      </trans-unit>
-      <trans-unit id="134">
-        <source>Script</source>
-        <target>Писмо</target>
       </trans-unit>
       <trans-unit id="135">
         <source>Record citations for any external sources used in the archival description (such as the Scope and Content, Custodial History, or Notes fields).</source>
@@ -547,10 +511,6 @@
       <trans-unit id="136">
         <source>Sources</source>
         <target>Извори</target>
-      </trans-unit>
-      <trans-unit id="137">
-        <source>Edit title and statement of responsibility area</source>
-        <target>Уреди подручје наслова и података о одговорности</target>
       </trans-unit>
       <trans-unit id="138">
         <source>Parallel title</source>
@@ -568,41 +528,13 @@
         <source>Repository</source>
         <target>Институција</target>
       </trans-unit>
-      <trans-unit id="142">
-        <source>Edit edition area</source>
-        <target>Уреди подручје издања</target>
-      </trans-unit>
       <trans-unit id="143">
         <source>Edition statement of responsibility</source>
         <target>Податак о одговорности за издање</target>
       </trans-unit>
-      <trans-unit id="144">
-        <source>Edit class of material specific details area</source>
-        <target>Уреди подручје посебних детаља врсте грађе</target>
-      </trans-unit>
-      <trans-unit id="145">
-        <source>Edit dates of creation area</source>
-        <target>Уреди подручје датума стварања</target>
-      </trans-unit>
-      <trans-unit id="146">
-        <source>Edit physical description area</source>
-        <target>Уреди подручје физичког описа</target>
-      </trans-unit>
-      <trans-unit id="147">
-        <source>Edit publisher's series area</source>
-        <target>Уреди подручје издавачке целине</target>
-      </trans-unit>
       <trans-unit id="148">
         <source>Parallel titles of publisher's series</source>
         <target>Упоредни наслови издавачке целине</target>
-      </trans-unit>
-      <trans-unit id="149">
-        <source>Edit archival description area</source>
-        <target>Уреди подручје архивског описа</target>
-      </trans-unit>
-      <trans-unit id="150">
-        <source>Edit notes area</source>
-        <target>Уреди подручје напомена</target>
       </trans-unit>
       <trans-unit id="151">
         <source>Arrangement</source>
@@ -628,21 +560,9 @@
         <source>General note</source>
         <target>Општа напомена</target>
       </trans-unit>
-      <trans-unit id="157">
-        <source>Edit standard number area</source>
-        <target>Уреди подручје стандардног броја</target>
-      </trans-unit>
       <trans-unit id="158">
         <source>Standard number</source>
         <target>Стандардни број</target>
-      </trans-unit>
-      <trans-unit id="159">
-        <source>Edit access points</source>
-        <target>Уреди приступне тачке</target>
-      </trans-unit>
-      <trans-unit id="160">
-        <source>Edit control area</source>
-        <target>Уреди подручје контроле</target>
       </trans-unit>
       <trans-unit id="161">
         <source>Description record identifier</source>
@@ -663,6 +583,46 @@
       <trans-unit id="165">
         <source>Accession area</source>
         <target>Подручје улазног инвентара</target>
+      </trans-unit>
+      <trans-unit id="166">
+        <source>Physical description - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="167">
+        <source>This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="168">
+        <source>Title - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="169">
+        <source>Level of description - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="170">
+        <source>Scope and content - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="171">
+        <source>Names and dates</source>
+        <target>Називи/Имена и датуми</target>
+      </trans-unit>
+      <trans-unit id="172">
+        <source>Languages of the material</source>
+        <target>Језици грађе</target>
+      </trans-unit>
+      <trans-unit id="173">
+        <source>Scripts of the material</source>
+        <target>Писма грађе</target>
+      </trans-unit>
+      <trans-unit id="174">
+        <source>Language(s)</source>
+        <target>Језик(ци)</target>
+      </trans-unit>
+      <trans-unit id="175">
+        <source>Script(s)</source>
+        <target>Писмо(а)</target>
       </trans-unit>
     </body>
   </file>

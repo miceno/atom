@@ -107,6 +107,28 @@ class arInstall
         }
     }
 
+    public static function createAppChallengeYml()
+    {
+        $appChallengePath = sfConfig::get('sf_config_dir').'/appChallenge.yml';
+
+        // Read appChallenge.yml, from appChallenge.yml.tmpl.
+        $appChallengePaths = [];
+        $appChallengePaths[] = $appChallengePath;
+        $appChallengePaths[] = $appChallengePath.'.tmpl';
+
+        foreach ($appChallengePaths as $path) {
+            if (false !== $content = file_get_contents($path)) {
+                break;
+            }
+        }
+
+        if (false === file_put_contents($appChallengePath, $content)) {
+            throw new Exception(
+                "Can't write configuration file {$appChallengePath}"
+            );
+        }
+    }
+
     public static function createSettingsYml()
     {
         $settingsYmlPath = sfConfig::get('sf_app_config_dir').'/settings.yml';
@@ -276,7 +298,8 @@ class arInstall
         }
 
         $curlHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+        // set curl handle to null to close connection
+        $curl = null;
 
         if (200 !== $curlHttpCode) {
             throw new Exception("Elasticsearch error: {$curlHttpCode}");

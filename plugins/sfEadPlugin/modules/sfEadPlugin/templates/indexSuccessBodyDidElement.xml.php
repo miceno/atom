@@ -141,12 +141,12 @@
   <?php } ?>
 
   <?php $controlSources = 'app_element_visibility_'.$template.'_control_sources'; ?>
-  <?php if (${$resourceVar}->sources && ($authenticated || 1 == sfConfig::get($controlSources))) { ?>
+  <?php if (${$resourceVar}->sources && ($authenticated || (1 == sfConfig::get($controlSources) && !$findingAid))) { ?>
     <note type="sourcesDescription"><p><?php echo escape_dc(esc_specialchars(${$resourceVar}->sources)); ?></p></note>
   <?php } ?>
 
   <?php 'isad' == $template ? $generalNotes = 'app_element_visibility_isad_notes' : $generalNotes = 'app_element_visibility_rad_general_notes'; ?>
-  <?php if (0 < count($notes = ${$resourceVar}->getNotesByType(['noteTypeId' => QubitTerm::GENERAL_NOTE_ID])) && ($authenticated || 1 == sfConfig::get($generalNotes))) { ?>
+  <?php if (0 < count($notes = ${$resourceVar}->getNotesByType(['noteTypeId' => QubitTerm::GENERAL_NOTE_ID])) && ($authenticated || (1 == sfConfig::get($generalNotes) && !$findingAid))) { ?>
     <?php foreach ($notes as $note) { ?>
       <note type="generalNote" <?php if (0 < strlen($encoding = $ead->getMetadataParameter('generalNote') ?? '')) { ?>encodinganalog="<?php echo $encoding; ?>"<?php } ?>>
         <p><?php echo escape_dc(esc_specialchars($note->getContent(['cultureFallback' => true]))); ?></p>
@@ -177,7 +177,7 @@
   <?php if (null !== $digitalObject = ${$resourceVar}->digitalObjectsRelatedByobjectId[0]) { ?>
     <?php if (QubitTerm::OFFLINE_ID != $digitalObject->usageId) { ?>
       <?php if (QubitAcl::check(${$resourceVar}, 'readMaster') && 0 < strlen($url = QubitTerm::EXTERNAL_URI_ID == $digitalObject->usageId ? $digitalObject->getPath() : $ead->getAssetPath($digitalObject))) { ?>
-        <dao linktype="simple" href="<?php echo $url; ?>" role="master" actuate="onrequest" show="embed"/>
+        <dao linktype="simple" href="<?php echo escape_dc(esc_specialchars($url)); ?>" role="master" actuate="onrequest" show="embed"/>
       <?php } elseif (null !== $digitalObject->reference && QubitAcl::check(${$resourceVar}, 'readReference') && 0 < strlen($url = $ead->getAssetPath($digitalObject, true) ?? '')) { ?>
         <dao linktype="simple" href="<?php echo $url; ?>" role="reference" actuate="onrequest" show="embed"/>
       <?php } ?>

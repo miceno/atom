@@ -25,10 +25,12 @@
 class QubitFlatfileExport
 {
     public $columnNames = [];       // ordered header column names
+    public $totalColumnsIncludingHidden = 0;  // total number of columns including hidden elements
     public $standardColumns = [];       // flatfile columns that are object properties
     public $columnMap = [];       // flatfile columns that map to object properties
     public $propertyMap = [];       // flatfile columns that map to Qubit properties
     public $user;          // user doing the export
+    public $environment;   // environment the export is being run in
     protected $configurationLoaded = false;  // has the configuuration been loaded?
 
     protected $resource;                     // current resource being exported
@@ -42,6 +44,7 @@ class QubitFlatfileExport
     protected $separatorChar = '|';          // character to use when imploding arrays to a single value
     protected $params;
     protected $nonVisibleElementsIncluded;
+    protected $nonVisibleElementsIndexes = [];
     protected $path;
     protected $standard;
 
@@ -68,6 +71,11 @@ class QubitFlatfileExport
         if (false !== $rowsPerFile) {
             $this->rowsPerFile = $rowsPerFile;
         }
+
+        $context = sfContext::getInstance();
+
+        $this->user = $context->getUser();
+        $this->environment = $context->getConfiguration()->getEnvironment();
 
         include_once sfConfig::get('sf_root_dir').'/lib/helper/QubitHelper.php';
     }
@@ -106,6 +114,7 @@ class QubitFlatfileExport
         }
 
         $this->columnNames = $config['columnNames'];
+        $this->totalColumnsIncludingHidden = count($this->columnNames);
         $this->standardColumns = isset($config['direct']) ? $config['direct'] : [];
         $this->columnMap = isset($config['map']) ? $config['map'] : [];
         $this->propertyMap = isset($config['property']) ? $config['property'] : [];
@@ -277,6 +286,18 @@ class QubitFlatfileExport
             }
         }
 
+        // Remove accessionNumber from public exports
+        if (!in_array($this->environment, ['cli', 'worker']) && (!$this->user || !$this->user->isAuthenticated())) {
+            if (!in_array('accessionNumber', $this->nonVisibleElementsIncluded)) {
+                array_push($this->nonVisibleElementsIncluded, 'accessionNumber');
+            }
+
+            $accessionIndex = array_search('accessionNumber', $this->columnNames);
+            if (false !== $accessionIndex && !in_array($accessionIndex, $this->nonVisibleElementsIndexes)) {
+                array_push($this->nonVisibleElementsIndexes, $accessionIndex);
+            }
+        }
+
         $this->prepareRowFromResource();
 
         if (!empty($this->nonVisibleElementsIncluded)) {
@@ -295,9 +316,17 @@ class QubitFlatfileExport
         }
 
         // Write row to file and initialize row
-        $this->row = array_slice($this->row, 0, count($this->columnNames));
+        if (!empty($this->nonVisibleElementsIndexes)) {
+            sort($this->nonVisibleElementsIndexes);
+            foreach ($this->nonVisibleElementsIndexes as $index) {
+                if (array_key_exists($index, $this->row)) {
+                    unset($this->row[$index]);
+                }
+            }
+        }
+
         $this->appendRowToCsvFile($filePath, $this->row);
-        $this->row = array_fill(0, count($this->columnNames), null);
+        $this->row = array_fill(0, $this->totalColumnsIncludingHidden, null);
         ++$this->rowsExported;
     }
 
@@ -378,6 +407,10 @@ class QubitFlatfileExport
                     if (array_key_exists($element, $headers)) {
                         foreach ($headers[$element]['csv'] as $ele) {
                             array_push($nonVisibleElementsIncluded, $ele);
+                            $index = array_search($ele, $this->columnNames);
+                            if (is_int($index) && !in_array($index, $this->nonVisibleElementsIndexes)) {
+                                array_push($this->nonVisibleElementsIndexes, $index);
+                            }
                         }
                     }
                 }

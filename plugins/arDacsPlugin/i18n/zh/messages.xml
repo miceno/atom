@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="en" target-language="zh" datatype="plaintext" original="messages" date="2025-05-06T21:03:39Z" product-name="messages">
+  <file source-language="en" target-language="zh" datatype="plaintext" original="messages" date="2025-09-26T19:34:41Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
@@ -20,37 +20,13 @@
         <source>Biographical history</source>
         <target>传纪历史</target>
       </trans-unit>
-      <trans-unit id="5">
-        <source>Identifier - This is a mandatory element.</source>
-        <target>标识符-必填</target>
-      </trans-unit>
-      <trans-unit id="6">
-        <source>Name and location of repository - This is a mandatory element.</source>
-        <target>典藏库名称和地点-必填.</target>
-      </trans-unit>
-      <trans-unit id="7">
-        <source>Title - This is a mandatory element.</source>
-        <target>标题-必填.</target>
-      </trans-unit>
       <trans-unit id="8">
         <source>Date(s) - are not consistent with higher levels.</source>
         <target>日期 - 与更高层级不一致.</target>
       </trans-unit>
-      <trans-unit id="9">
-        <source>Date(s) - This is a mandatory element.</source>
-        <target>日期-必填.</target>
-      </trans-unit>
-      <trans-unit id="10">
-        <source>Extent - This is a mandatory element.</source>
-        <target>尺寸-必填</target>
-      </trans-unit>
       <trans-unit id="11">
         <source>This archival description, or one of its higher levels, requires at least one creator.</source>
         <target>该文献著录, 或其某一项高级描述, 要求至少一个创建者.</target>
-      </trans-unit>
-      <trans-unit id="12">
-        <source>Scope and content - This is a mandatory element.</source>
-        <target>范围和内容-必填.</target>
       </trans-unit>
       <trans-unit id="13">
         <source>Add new archival description</source>
@@ -75,10 +51,6 @@
       <trans-unit id="18">
         <source>Identifier</source>
         <target>标识符</target>
-      </trans-unit>
-      <trans-unit id="19">
-        <source>This is a mandatory element.</source>
-        <target>必填细目.</target>
       </trans-unit>
       <trans-unit id="20">
         <source>Name and location of repository</source>
@@ -320,10 +292,6 @@
         <source>Name access points (subjects)</source>
         <target>名称检索点 (主题)</target>
       </trans-unit>
-      <trans-unit id="80">
-        <source>Edit identity elements</source>
-        <target>编辑特征标识细目</target>
-      </trans-unit>
       <trans-unit id="81">
         <source>Reference code</source>
         <target>参考代码</target>
@@ -340,14 +308,6 @@
         <source>Related function</source>
         <target>相关功能</target>
       </trans-unit>
-      <trans-unit id="85">
-        <source>Edit context and structure elements</source>
-        <target>编辑背景和结构细目</target>
-      </trans-unit>
-      <trans-unit id="86">
-        <source>Edit conditions of access and use elements</source>
-        <target>编辑检索和使用条件的细目</target>
-      </trans-unit>
       <trans-unit id="87">
         <source>Conditions governing reproduction</source>
         <target>管理复制的条件</target>
@@ -355,10 +315,6 @@
       <trans-unit id="88">
         <source>Finding aids</source>
         <target>索引指南</target>
-      </trans-unit>
-      <trans-unit id="89">
-        <source>Edit acquisition and appraisal elements</source>
-        <target>编辑入藏和评价细目</target>
       </trans-unit>
       <trans-unit id="90">
         <source>Immediate source of acquisition</source>
@@ -368,17 +324,9 @@
         <source>Accruals</source>
         <target>增加</target>
       </trans-unit>
-      <trans-unit id="92">
-        <source>Edit related materials elements</source>
-        <target>编辑相关资料细目</target>
-      </trans-unit>
       <trans-unit id="93">
         <source>Publication notes</source>
         <target>发布说明</target>
-      </trans-unit>
-      <trans-unit id="94">
-        <source>Edit notes element</source>
-        <target>编辑说明细目</target>
       </trans-unit>
       <trans-unit id="95">
         <source>General note</source>
@@ -388,17 +336,9 @@
         <source>Specialized notes</source>
         <target>详细说明</target>
       </trans-unit>
-      <trans-unit id="97">
-        <source>Edit description control element</source>
-        <target>编辑描述控制细目</target>
-      </trans-unit>
       <trans-unit id="98">
         <source>Archivist's note</source>
         <target>档案管理员说明</target>
-      </trans-unit>
-      <trans-unit id="99">
-        <source>Edit access points</source>
-        <target>编辑检索点</target>
       </trans-unit>
       <trans-unit id="100">
         <source>Rights area</source>
@@ -411,6 +351,34 @@
       <trans-unit id="102">
         <source>Genre access points</source>
         <target>体裁检索点</target>
+      </trans-unit>
+      <trans-unit id="103">
+        <source>Identifier - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="104">
+        <source>This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="105">
+        <source>Name and location of repository - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="106">
+        <source>Title - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="107">
+        <source>Date(s) - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="108">
+        <source>Extent - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="109">
+        <source>Scope and content - This field is marked as mandatory in the relevant descriptive standard.</source>
+        <target/>
       </trans-unit>
     </body>
   </file>

@@ -51,7 +51,7 @@ services:
 
   elasticsearch:
     platform: linux/arm64
-    image: webhippie/elasticsearch:6.8
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     env_file: etc/environment
     ulimits:
       memlock:

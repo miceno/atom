@@ -64,6 +64,13 @@ abstract class exportBulkBaseTask extends sfBaseTask
                 $eadLevels = ['class', 'collection', 'file', 'fonds', 'item', 'otherlevel', 'recordgrp', 'series', 'subfonds', 'subgrp', 'subseries'];
                 $ead = new sfEadPlugin($resource, $options);
 
+                $findingAid = isset($options['findingAidVisibilitiy']) ? (bool) $options['findingAidVisibilitiy'] : false;
+
+                extract([
+                    'resource' => $resource,
+                    'findingAidVisibilitiy' => $findingAid,
+                ]);
+
                 break;
 
             case 'mods':
