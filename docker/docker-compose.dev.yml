@@ -12,15 +12,11 @@ services:
     env_file: etc/environment
     environment:
       - ATOM_COVERAGE=${ATOM_COVERAGE:-false}
-      - PHP_IDE_CONFIG=serverName=docker
     volumes:
       - composer_deps:/atom/src/vendor/composer
       - npm_deps:/atom/src/node_modules
       - ..:/atom/src:rw
       - ./etc/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
-      - /Users/orestes/devel/shell-utils/atom-scripts:/mnt/data:rw
-    extra_hosts:
-      host.docker.internal: host-gateway
 
   atom_worker:
     build: ..
@@ -45,7 +41,7 @@ services:
       - ..:/atom/src:ro
       - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "127.0.0.1:63001:80"
+      - "63001:80"
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
@@ -60,7 +56,7 @@ services:
       - "127.0.0.1:63002:9200"
 
   percona:
-    image: percona/percona-server:8.0
+    image: percona:8.0
     env_file: etc/environment
     volumes:
       - percona_data:/var/lib/mysql:rw
