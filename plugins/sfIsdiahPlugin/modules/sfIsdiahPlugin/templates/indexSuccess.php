@@ -253,10 +253,10 @@
     <div class="<?php echo render_b5_show_value_css_classes(); ?>">
       <ul class="<?php echo render_b5_show_list_css_classes(); ?>">
         <?php foreach ($resource->getTermRelations(QubitTaxonomy::THEMATIC_AREA_ID) as $item) { ?>
-          <li><?php echo __(render_value_inline($item->term)); ?> (Thematic area)</li>
+          <li><?php echo __(render_value_inline($item->term));?> (<?php echo __("Thematic area");?>)</li>
         <?php } ?>
         <?php foreach ($resource->getTermRelations(QubitTaxonomy::GEOGRAPHIC_SUBREGION_ID) as $item) { ?>
-          <li><?php echo __(render_value_inline($item->term)); ?> (Geographic subregion)</li>
+          <li><?php echo __(render_value_inline($item->term));?> (<?php echo __("Geographic subregion");?>)</li>
         <?php } ?>
       </ul>
     </div>
