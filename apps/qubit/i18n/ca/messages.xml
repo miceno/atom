@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2025-10-01T07:06:34Z" product-name="messages">
+  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2025-10-05T23:20:23Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="32e271bec7e31df1838efd94cf39df8b980c7283">
@@ -826,7 +826,7 @@
       </trans-unit>
       <trans-unit id="14fea77455345c25dec4ac5d82112d5399a2183f">
         <source xml:space="preserve">Auto refresh</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Auto refresca</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/browseSuccess.php</note>
       </trans-unit>
       <trans-unit id="0f68996a1730404b5626fc68c5b440b147fad9f0" xml:space="preserve">
@@ -1092,17 +1092,17 @@
       </trans-unit>
       <trans-unit id="bc9b74855acc332d9879627ce1312c1d1ca22958">
         <source xml:space="preserve">Choosing "Include descendants" will include all lower-level records beneath those currently on the clipboard in the export.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">L'elecci&#xF3; de "inclou els descendents" inclour&#xE0; tots els registres de nivell inferior als que hi ha actualment al porta-retalls en l'exportaci&#xF3;.</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/clipboard/actions/exportAction.class.php</note>
       </trans-unit>
       <trans-unit id="172a3b6a149802a62c5013526250c882f1fd74ad">
         <source xml:space="preserve">Choosing "Include draft records" will include those marked with a Draft publication status in the export. Note: if you do NOT choose this option, any descendants of a draft record will also be excluded, even if they are published.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">En triar "Inclou els registres d'esborrany" s'inclouran aquells marcats amb un estat de publicaci&#xF3; d'esborrany a l'exportaci&#xF3;. Nota: si no escolliu aquesta opci&#xF3;, tamb&#xE9; s'exclouran els descendents d'un esborrany de registre, fins i tot si es publiquen.</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/clipboard/actions/exportAction.class.php</note>
       </trans-unit>
       <trans-unit id="2b107ff02c391b4c97281d7682388b3099a44095">
         <source xml:space="preserve">Choosing "Include non-visible elements" will include those not marked as Visible Elements.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">L'elecci&#xF3; d'"Inclou elements no visibles" inclour&#xE0; aquells que no estiguin marcats com a elements visibles.</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/clipboard/actions/exportAction.class.php</note>
       </trans-unit>
       <trans-unit id="4271627f4f0bef6104a95cca7bb21cda4d74503e" xml:space="preserve">
@@ -1642,7 +1642,7 @@
       </trans-unit>
       <trans-unit id="ad092b8d511a393f3b20845cbd99a66c962f1e85" xml:space="preserve">
         <source xml:space="preserve">Description identifier</source>
-        <target xml:space="preserve" state="final"></target>
+        <target xml:space="preserve" state="final">Identificador de la descripci&#xF3;</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/settings/templates/visibleElementsSuccess.php</note>
       </trans-unit>
       <trans-unit id="c490453d6c970206d1d92775c6f544e99afa1c30" xml:space="preserve">
@@ -1887,7 +1887,7 @@
       </trans-unit>
       <trans-unit id="eeefe357fcb54190a1aa5487781c20ada739265d">
         <source xml:space="preserve">Edit row</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Edita la l&#xEC;nea</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/object/templates/editPhysicalObjectsSuccess.php</note>
       </trans-unit>
       <trans-unit id="2b263483ab8c6a8fff61e14ab401a2867230b956" xml:space="preserve">
@@ -2172,7 +2172,7 @@
       </trans-unit>
       <trans-unit id="ca3a7a0ff5963769223cf46a6bf3a6860db3fa88">
         <source xml:space="preserve">Failed jobs</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Tasques fallides</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/browseSuccess.php</note>
       </trans-unit>
       <trans-unit id="df81fa768ed9358b8abb391147c8db1f13431e4d">
@@ -2787,7 +2787,7 @@
       </trans-unit>
       <trans-unit id="2651a4bb5f704de3034a75d98d667868216b3c1e">
         <source xml:space="preserve">Include non-visible elements</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Inclou elements no visibles</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/clipboard/actions/exportAction.class.php</note>
       </trans-unit>
       <trans-unit id="58feb71e31d2f20331c89098a24290d9edcf4d5d" xml:space="preserve">
@@ -3162,7 +3162,7 @@
       </trans-unit>
       <trans-unit id="8bf95ea372568c7a254ba9fada5f6f1701ebc5b5" xml:space="preserve">
         <source xml:space="preserve">Log</source>
-        <target xml:space="preserve" state="final">Registrar</target>
+        <target xml:space="preserve" state="final">Registre</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/reportSuccess.php</note>
       </trans-unit>
       <trans-unit id="43167fa327b2e9d201119a843a207aca9c2baafc" xml:space="preserve">
@@ -4298,7 +4298,7 @@
       </trans-unit>
       <trans-unit id="56e3badc4e6c5cc95e0ea5a9a878b9bd09f319d4">
         <source xml:space="preserve">Refresh</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Refresca</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/browseSuccess.php</note>
       </trans-unit>
       <trans-unit id="0f217179940c6d89f5cb2c7002a58d91ab7286c1" xml:space="preserve">
@@ -4553,7 +4553,7 @@
       </trans-unit>
       <trans-unit id="0a419de40e98c320a4eefff8953fce4fdfb651f4">
         <source xml:space="preserve">Return to jobs management page</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Torna a la p&#xE0;gina de gesti&#xF3; de tasques</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/reportSuccess.php</note>
       </trans-unit>
       <trans-unit id="328d8069dc190f42a30ec62b9ee09e13d9d0c03f">
@@ -4798,7 +4798,7 @@
       </trans-unit>
       <trans-unit id="5bbd6f15ea72530160fed9d3ee41b54ea5451a72">
         <source xml:space="preserve">Select levels of descendant descriptions for inclusion</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Seleccioneu els nivells de les descripcions dels descendents per a la inclusi&#xF3;</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/clipboard/actions/exportAction.class.php</note>
       </trans-unit>
       <trans-unit id="9eed8d3863d9140182f5b227064d72436a10edcd">
@@ -5183,7 +5183,7 @@
       </trans-unit>
       <trans-unit id="2dacf65959849884a011f36f76a04eebea94c5ea">
         <source xml:space="preserve">Submit</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Desa</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/informationobject/templates/_event.php</note>
       </trans-unit>
       <trans-unit id="6a1c6604365e38640333c513d9915bf450855910">
@@ -5458,7 +5458,7 @@
       </trans-unit>
       <trans-unit id="ab90d9d736f9e0909b62d0922e0482e4b827449f">
         <source xml:space="preserve">This field is required.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Aquest camp &#xE9;s obligatori.</target>
         <note>https://github.com/artefactual/atom/blob/master/lib/form/arB5WidgetFormSchemaFormatter.class.php</note>
       </trans-unit>
       <trans-unit id="423e0daa898ce63fd24668eb17bf7dbd30029f09" xml:space="preserve">
@@ -5728,7 +5728,7 @@
       </trans-unit>
       <trans-unit id="8bdf057f91e76ae328b2a21d35f682daa08a0ec0">
         <source xml:space="preserve">Upload</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Puja</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/informationobject/templates/uploadFindingAidSuccess.php</note>
       </trans-unit>
       <trans-unit id="aa34b979821d48b9ac979a490fa9f1974d55e35a">
@@ -6117,7 +6117,7 @@ hidden elements
       </trans-unit>
       <trans-unit id="effcd964457987df5627f005cd37b12c967032c1">
         <source xml:space="preserve">You may only clear jobs belonging to you.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Nom&#xE9;s pots netejar els llocs de treball que et pertanyen.</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/browseSuccess.php</note>
       </trans-unit>
       <trans-unit id="ae5883a623518731e3e0ce34b99c181ffbe9f069" xml:space="preserve">
