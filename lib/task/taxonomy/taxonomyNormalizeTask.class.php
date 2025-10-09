@@ -132,7 +132,6 @@ EOF;
         }
         $this->log('Taxonomy term usage populated.');
         $this->log('Taxonomy term usage:');
-        $this->log(print_r($names, true));
         $this->log(json_encode($names, JSON_PRETTY_PRINT));
     }
 
