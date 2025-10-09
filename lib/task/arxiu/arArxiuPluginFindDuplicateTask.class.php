@@ -75,18 +75,63 @@ EOF;
     {
         parent::execute($arguments, $options);
 
-        // Remind the user they are in dry run mode
+        // Inform the user if dry-run mode is enabled
         if ($options['dry-run']) {
             $this->log('*** DRY RUN (no changes will be made to the database) ***');
         }
 
+        // Log the culture being used for normalization
         $this->log("Normalizing for '".$options['culture']."' culture...");
-        // Get all authority records
-        $actors = QubitActor::getAllNames();
-        $actors = QubitActor::getAll();
 
-        $this->log('Found '.count($actors).' authority records');
-        // Log names
-        $this->log(json_encode($actors, JSON_PRETTY_PRINT));
+        // Retrieve all authority records
+        $result_actors = QubitActor::getAllNames();
+
+        // Normalize names for duplicate detection
+        foreach ($result_actors as $key => $actor) {
+            // Normalize the actor's name using the dedicated method
+            $result_actors[$key]['norm_name'] = $this->normalizeName($actor['name']);
+        }
+
+        // Log the total number of authority records found
+        $this->log('Found '.count($result_actors).' authority records');
+
+        // Log normalized names for review (avoid logging full actor data if sensitive)
+        $this->log(json_encode(array_map(function($actor) {
+            return [
+                'id' => $actor['id'],
+                'norm_name' => $actor['norm_name'],
+                'name' => $actor['name']
+            ];
+        }, $result_actors), JSON_PRETTY_PRINT));
+    }
+
+    // Normalize a name for duplicate detection
+    protected function normalizeName($name)
+    {
+        // Remove parentheses from the name
+        $norm_name = preg_replace('/\([^)]*\)/', '', $name);
+
+        // Remove duplicated whitespaces
+        $norm_name = preg_replace('/\s+/', ' ', $norm_name);
+
+        // Remove ending punctuation
+        $norm_name = preg_replace('/[.,;:!?]$/', '', $norm_name);
+
+        // Remove ending whitespaces
+        $norm_name = preg_replace('/\s+$/', '', $norm_name);
+
+        // Normalize accents in UTF-8 using intl if available, otherwise fallback to iconv
+        if (function_exists('transliterator_transliterate')) {
+            // Use intl transliterator for better international support
+            $norm_name = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $norm_name);
+        } else {
+            // Fallback to iconv
+            $norm_name = iconv('UTF-8', 'ASCII//TRANSLIT', $norm_name);
+        }
+
+        // Convert to lowercase
+        $norm_name = strtolower($norm_name);
+
+        return $norm_name;
     }
 }
