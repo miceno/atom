@@ -109,14 +109,23 @@ EOF;
             return $actor['nameId'] === null;
         });
 
+        // Build an index of authors by norm_name
+        $normNameIndex = [];
+        foreach ($result_actors as $actor) {
+            $norm = $actor['norm_name'];
+            if (!isset($normNameIndex[$norm])) {
+                $normNameIndex[$norm] = [];
+            }
+            $normNameIndex[$norm][] = $actor;
+        }
+
         // Log the total number of authority records found
         $this->log('Found ' . count($result_actors) . ' authority records');
-        // $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
 
         // Log normalized names for review (avoid logging full actor data if sensitive)
         $this->log('Normalized names for review:');
         foreach ($result_actors as $actor) {
-            $matches = $this->matchAuthor($actor, $result_actors);
+            $matches = $this->matchAuthor($actor, $result_actors, $normNameIndex);
             if ($options['verbose']) {
                 if (count($matches) > 0) {
                     $this->log($actor['name'] . ' => ' . $actor['norm_name']);
@@ -151,8 +160,8 @@ EOF;
         return $norm_name;
     }
 
-    // Match a source author object to a list of author objects according to the spec
-    protected function matchAuthor($sourceAuthor, $authorList)
+    // Match a source author object to a list of author objects using an index for optimization
+    protected function matchAuthor($sourceAuthor, $authorList, $normNameIndex)
     {
         // Use the normalized name from the source author object
         $normSource = $sourceAuthor['norm_name'];
@@ -160,45 +169,47 @@ EOF;
         // Initialize an array to hold matches
         $matches = [];
 
-        // Iterate over each candidate author
-        foreach ($authorList as $author) {
-            // Skip authors with the same actorId as the source author
-            if ($author['actorId'] === $sourceAuthor['actorId']) {
-                continue;
-            }
-            // Check if the source author's normalized name contains a comma
-            if (strpos($normSource, ',') !== false) {
-                // Split the normalized name into last names and first name
-                $parts = array_map('trim', explode(',', $normSource));
-                // If there are two parts, handle "Last [Second], First"
-                if (count($parts) === 2) {
-                    // The full last name (may include second last name)
-                    $lastNames = $parts[0];
-                    // The first name
-                    $firstName = $parts[1];
-                    // Use the normalized name from the author object
-                    $normAuthor = $author['norm_name'];
-                    // Split the author in the list
-                    $authorParts = array_map('trim', explode(',', $normAuthor));
-                    if (count($authorParts) === 2) {
-                        // Match first name and full last name
-                        if ($authorParts[0] === $lastNames && $authorParts[1] === $firstName) {
-                            $matches[] = $author;
-                            continue;
-                        }
-                        // Match first name and only first last name
-                        $firstLastName = explode(' ', $lastNames)[0];
-                        $authorFirstLastName = explode(' ', $authorParts[0])[0];
-                        if ($authorFirstLastName === $firstLastName && $authorParts[1] === $firstName) {
+        // Skip authors with the same actorId as the source author in all cases
+        $skipId = $sourceAuthor['actorId'];
+
+        // Check if the source author's normalized name contains a comma
+        if (strpos($normSource, ',') !== false) {
+            // Split the normalized name into last names and first name
+            $parts = array_map('trim', explode(',', $normSource));
+            // If there are two parts, handle "Last [Second], First"
+            if (count($parts) === 2) {
+                // The full last name (may include second last name)
+                $lastNames = $parts[0];
+                // The first name
+                $firstName = $parts[1];
+                // Build possible norm_name keys for matching
+                $fullNorm = $lastNames . ', ' . $firstName;
+                $firstLastName = explode(' ', $lastNames)[0];
+                $firstNorm = $firstLastName . ', ' . $firstName;
+                // Check for matches in the index for full last name
+                if (isset($normNameIndex[$fullNorm])) {
+                    foreach ($normNameIndex[$fullNorm] as $author) {
+                        if ($author['actorId'] !== $skipId) {
                             $matches[] = $author;
                         }
                     }
                 }
-            } else {
-                // For non-standard format, match the normalized name as a whole
-                $normAuthor = $author['norm_name'];
-                if ($normAuthor === $normSource) {
-                    $matches[] = $author;
+                // Check for matches in the index for first last name
+                if (isset($normNameIndex[$firstNorm])) {
+                    foreach ($normNameIndex[$firstNorm] as $author) {
+                        if ($author['actorId'] !== $skipId) {
+                            $matches[] = $author;
+                        }
+                    }
+                }
+            }
+        } else {
+            // For non-standard format, match the normalized name as a whole using the index
+            if (isset($normNameIndex[$normSource])) {
+                foreach ($normNameIndex[$normSource] as $author) {
+                    if ($author['actorId'] !== $skipId) {
+                        $matches[] = $author;
+                    }
                 }
             }
         }
