@@ -97,56 +97,22 @@ EOF;
             }
         }
 
-        // Compare normalized names and keep the first one found
-
-        $result_actors = array_unique(array_map(function($actor) {
-            return $actor['norm_name'] == $this->normalizeName($actor['name']) ? $actor : null;
-        }, $result_actors), SORT_REGULAR);;
+        // Remove entries with non null nameId
+        $result_actors = array_filter($result_actors, function ($actor) {
+            return $actor['nameId'] === null;
+        });
 
         // Log the total number of authority records found
         $this->log('Found '.count($result_actors).' authority records');
-
-        // Build a lookup associative array using the normalized names as keys and the original names as values
-        $lookup_norm_names = array_combine(array_column($result_actors, 'norm_name'), array_column($result_actors, 'name'));
+        // $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
 
         // Log normalized names for review (avoid logging full actor data if sensitive)
         $this->log('Normalized names for review:');
         foreach ($result_actors as $actor) {
             $this->log($actor['name'].' => '.$actor['norm_name']);
-            // Names with a comma are like "Last, First" and "Last Second, First", so we need to
-            // split the name into two parts, "Last" and "First" or "Last Second" and "First"
-            $name_parts = explode(',', $actor['norm_name']);
-
-            // compare each name with the others
-            foreach ($result_actors as $actor2) {
-                // Names with a comma are like "Last, First" and "Last Second, First", so we need to
-                // split the name into two parts, "Last" and "First" or "Last Second" and "First"
-                // Skip the current actor
-                if ($actor['id'] == $actor2['id']) {
-                    continue;
-                }
-                if ($actor['norm_name'] == $actor2['norm_name']) {
-                    $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
-                } else {
-                    $name_parts2 = explode(',', $actor2['norm_name']);
-                    // Compare name_parts and name_parts2
-                    if (count($name_parts) == 2) {
-                        // format "Last, First" should match "First Last"
-                        $reconstructed_name = trim($name_parts[1] . ' ' . $name_parts[0]);
-                        if ($reconstructed_name == $actor2['norm_name']) {
-                            $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
-                        }
-                    } elseif (count($name_parts) == 3) {
-                        // format "Last Second, First" should match "First Last Second"
-                        $reconstructed_name = trim($name_parts[2] . ' ' . $name_parts[0] . ' ' . $name_parts[1]);
-                        if ($reconstructed_name == $actor2['name']) {
-                            $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
-                        }
-                    }
-                }
-            }
+            $matches = $this->matchAuthor($actor, $result_actors);
+            $this->log('Matches: '.count($matches). ' ('.implode(', ', array_column($matches, 'name')).')');
         }
-        // $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
     }
 
     // Normalize a name for duplicate detection
@@ -154,16 +120,6 @@ EOF;
     {
         // Remove parentheses from the name
         $norm_name = preg_replace('/\([^)]*\)/', '', $name);
-
-        // Remove duplicated whitespaces
-        $norm_name = preg_replace('/\s+/', ' ', $norm_name);
-
-        // Remove ending punctuation
-        $norm_name = preg_replace('/[.,;:!?]$/', '', $norm_name);
-
-        // Remove ending whitespaces
-        $norm_name = preg_replace('/\s+$/', '', $norm_name);
-
         // Normalize accents in UTF-8 using intl if available, otherwise fallback to iconv
         if (function_exists('transliterator_transliterate')) {
             // Use intl transliterator for better international support
@@ -172,10 +128,69 @@ EOF;
             // Fallback to iconv
             $norm_name = iconv('UTF-8', 'ASCII//TRANSLIT', $norm_name);
         }
-
         // Convert to lowercase
         $norm_name = strtolower($norm_name);
-
+        // Remove all non-alphanumeric except comma
+        $norm_name = preg_replace('/[^a-zA-Z0-9, ]/', '', $norm_name);
+        // Replace multiple spaces with a single space
+        $norm_name = preg_replace('/\s+/', ' ', $norm_name);
+        // Trim spaces
+        $norm_name = trim($norm_name);
         return $norm_name;
+    }
+
+    // Match a source author object to a list of author objects according to the spec
+    protected function matchAuthor($sourceAuthor, $authorList)
+    {
+        // Use the normalized name from the source author object
+        $normSource = $sourceAuthor['norm_name'];
+
+        // Initialize an array to hold matches
+        $matches = [];
+
+        // Iterate over each candidate author
+        foreach ($authorList as $author) {
+            // Skip authors with the same actorId as the source author
+            if ($author['actorId'] === $sourceAuthor['actorId']) {
+                continue;
+            }
+            // Check if the source author's normalized name contains a comma
+            if (strpos($normSource, ',') !== false) {
+                // Split the normalized name into last names and first name
+                $parts = array_map('trim', explode(',', $normSource));
+                // If there are two parts, handle "Last [Second], First"
+                if (count($parts) === 2) {
+                    // The full last name (may include second last name)
+                    $lastNames = $parts[0];
+                    // The first name
+                    $firstName = $parts[1];
+                    // Use the normalized name from the author object
+                    $normAuthor = $author['norm_name'];
+                    // Split the author in the list
+                    $authorParts = array_map('trim', explode(',', $normAuthor));
+                    if (count($authorParts) === 2) {
+                        // Match first name and full last name
+                        if ($authorParts[0] === $lastNames && $authorParts[1] === $firstName) {
+                            $matches[] = $author;
+                            continue;
+                        }
+                        // Match first name and only first last name
+                        $firstLastName = explode(' ', $lastNames)[0];
+                        $authorFirstLastName = explode(' ', $authorParts[0])[0];
+                        if ($authorFirstLastName === $firstLastName && $authorParts[1] === $firstName) {
+                            $matches[] = $author;
+                        }
+                    }
+                }
+            } else {
+                // For non-standard format, match the normalized name as a whole
+                $normAuthor = $author['norm_name'];
+                if ($normAuthor === $normSource) {
+                    $matches[] = $author;
+                }
+            }
+        }
+        // Return all matches found
+        return $matches;
     }
 }
