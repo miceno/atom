@@ -18,6 +18,7 @@
  */
 
 namespace arxiu;
+
 use arBaseTask;
 use QubitActor;
 use sfCommandOption;
@@ -59,6 +60,12 @@ class arArxiuPluginFindDuplicateTask extends arBaseTask
                 sfCommandOption::PARAMETER_NONE,
                 'Dry run (no database changes)',
                 null),
+            new sfCommandOption(
+                'verbose',
+                null,
+                sfCommandOption::PARAMETER_OPTIONAL,
+                'Verbose output',
+                false),
         ]);
 
         $this->namespace = 'arxiu';
@@ -81,7 +88,7 @@ EOF;
         }
 
         // Log the culture being used for normalization
-        $this->log("Normalizing for '".$options['culture']."' culture...");
+        $this->log("Normalizing for '" . $options['culture'] . "' culture...");
 
         // Retrieve all authority records
         $result_actors = QubitActor::getAllNames();
@@ -89,11 +96,11 @@ EOF;
         // Normalize names for duplicate detection
         foreach ($result_actors as $key => $actor) {
             // Normalize the actor's name using the dedicated method
-            if ($actor['nameId'] === null){
+            if ($actor['nameId'] === null) {
                 $result_actors[$key]['norm_name'] = $this->normalizeName($actor['name']);
-            }else{
+            } else {
                 // Skip parallel forms of name
-                $this->log('Skipping parallel form of name: '.$actor['name']);
+                $this->log('Skipping parallel form of name: ' . $actor['name']);
             }
         }
 
@@ -103,15 +110,19 @@ EOF;
         });
 
         // Log the total number of authority records found
-        $this->log('Found '.count($result_actors).' authority records');
+        $this->log('Found ' . count($result_actors) . ' authority records');
         // $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
 
         // Log normalized names for review (avoid logging full actor data if sensitive)
         $this->log('Normalized names for review:');
         foreach ($result_actors as $actor) {
-            $this->log($actor['name'].' => '.$actor['norm_name']);
             $matches = $this->matchAuthor($actor, $result_actors);
-            $this->log('Matches: '.count($matches). ' ('.implode(', ', array_column($matches, 'name')).')');
+            if ($options['verbose']) {
+                if (count($matches) > 0) {
+                    $this->log($actor['name'] . ' => ' . $actor['norm_name']);
+                    $this->log('Matches: ' . count($matches) . ' (' . implode(', ', array_column($matches, 'name')) . ')');
+                }
+            }
         }
     }
 
@@ -136,6 +147,7 @@ EOF;
         $norm_name = preg_replace('/\s+/', ' ', $norm_name);
         // Trim spaces
         $norm_name = trim($norm_name);
+
         return $norm_name;
     }
 
@@ -190,6 +202,7 @@ EOF;
                 }
             }
         }
+
         // Return all matches found
         return $matches;
     }
