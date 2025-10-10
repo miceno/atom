@@ -106,8 +106,47 @@ EOF;
         // Log the total number of authority records found
         $this->log('Found '.count($result_actors).' authority records');
 
+        // Build a lookup associative array using the normalized names as keys and the original names as values
+        $lookup_norm_names = array_combine(array_column($result_actors, 'norm_name'), array_column($result_actors, 'name'));
+
         // Log normalized names for review (avoid logging full actor data if sensitive)
-        $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
+        $this->log('Normalized names for review:');
+        foreach ($result_actors as $actor) {
+            $this->log($actor['name'].' => '.$actor['norm_name']);
+            // Names with a comma are like "Last, First" and "Last Second, First", so we need to
+            // split the name into two parts, "Last" and "First" or "Last Second" and "First"
+            $name_parts = explode(',', $actor['norm_name']);
+
+            // compare each name with the others
+            foreach ($result_actors as $actor2) {
+                // Names with a comma are like "Last, First" and "Last Second, First", so we need to
+                // split the name into two parts, "Last" and "First" or "Last Second" and "First"
+                // Skip the current actor
+                if ($actor['id'] == $actor2['id']) {
+                    continue;
+                }
+                if ($actor['norm_name'] == $actor2['norm_name']) {
+                    $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
+                } else {
+                    $name_parts2 = explode(',', $actor2['norm_name']);
+                    // Compare name_parts and name_parts2
+                    if (count($name_parts) == 2) {
+                        // format "Last, First" should match "First Last"
+                        $reconstructed_name = trim($name_parts[1] . ' ' . $name_parts[0]);
+                        if ($reconstructed_name == $actor2['norm_name']) {
+                            $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
+                        }
+                    } elseif (count($name_parts) == 3) {
+                        // format "Last Second, First" should match "First Last Second"
+                        $reconstructed_name = trim($name_parts[2] . ' ' . $name_parts[0] . ' ' . $name_parts[1]);
+                        if ($reconstructed_name == $actor2['name']) {
+                            $this->log('Match found: ' . $actor['name'] . ' == ' . $actor2['name']);
+                        }
+                    }
+                }
+            }
+        }
+        // $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
     }
 
     // Normalize a name for duplicate detection
