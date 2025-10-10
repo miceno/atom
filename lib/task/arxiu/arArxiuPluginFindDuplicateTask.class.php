@@ -89,20 +89,25 @@ EOF;
         // Normalize names for duplicate detection
         foreach ($result_actors as $key => $actor) {
             // Normalize the actor's name using the dedicated method
-            $result_actors[$key]['norm_name'] = $this->normalizeName($actor['name']);
+            if ($actor['nameId'] === null){
+                $result_actors[$key]['norm_name'] = $this->normalizeName($actor['name']);
+            }else{
+                // Skip parallel forms of name
+                $this->log('Skipping parallel form of name: '.$actor['name']);
+            }
         }
+
+        // Compare normalized names and keep the first one found
+
+        $result_actors = array_unique(array_map(function($actor) {
+            return $actor['norm_name'] == $this->normalizeName($actor['name']) ? $actor : null;
+        }, $result_actors), SORT_REGULAR);;
 
         // Log the total number of authority records found
         $this->log('Found '.count($result_actors).' authority records');
 
         // Log normalized names for review (avoid logging full actor data if sensitive)
-        $this->log(json_encode(array_map(function($actor) {
-            return [
-                'id' => $actor['id'],
-                'norm_name' => $actor['norm_name'],
-                'name' => $actor['name']
-            ];
-        }, $result_actors), JSON_PRETTY_PRINT));
+        $this->log(json_encode($result_actors, JSON_PRETTY_PRINT));
     }
 
     // Normalize a name for duplicate detection
