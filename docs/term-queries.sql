@@ -7,32 +7,53 @@
 -- used in information objects. The report is ordered by term id.
 
 SELECT DISTINCT t.id, tin.name, COUNT(i.id) AS use_count
-FROM term t INNER JOIN object_term_relation r
-                       ON r.term_id=t.id INNER JOIN information_object i ON r.object_id=i.id
-            inner join term_i18n tin on t.id=tin.id
-WHERE t.taxonomy_id=35 and tin.culture ='ca'
+FROM term t
+         INNER JOIN object_term_relation r
+                    ON r.term_id = t.id
+         INNER JOIN information_object i ON r.object_id = i.id
+         inner join term_i18n tin on t.id = tin.id
+WHERE t.taxonomy_id = 35
+  and tin.culture = 'ca'
 GROUP BY (t.id)
 ORDER BY 3 desc
 
 select t.id, tin.name
-from taxonomy t inner join taxonomy_i18n tin
-                           on t.id = tin.id
+from taxonomy t
+         inner join taxonomy_i18n tin
+                    on t.id = tin.id
 where tin.culture = 'ca'
 
 select t.id, tin.name
-from term t inner join term_i18n tin
-                       on t.id = tin.id
-where tin.culture ='ca' and t.taxonomy_id =35
+from term t
+         inner join term_i18n tin
+                    on t.id = tin.id
+where tin.culture = 'ca'
+  and t.taxonomy_id = 35
 -- order by id
 
+-- obtener los objetos relacionados con un term concreto
+SELECT t.id term_id, tin.name, ioin.title, r.object_id
+FROM term t
+         INNER JOIN object_term_relation r
+                    ON r.term_id = t.id
+         INNER JOIN information_object i ON r.object_id = i.id
+         INNER join information_object_i18n ioin on ioin.id = i.id
+         inner join term_i18n tin on t.id = tin.id
+WHERE t.id = :t_id -- 52136
+  and tin.culture = :culture
+-- 'ca'
 
-SELECT r.id, t.id, tin.name, i.identifier, ioin.title, r.term_id , r.object_id
-FROM term t INNER JOIN object_term_relation r
-                       ON r.term_id=t.id INNER JOIN information_object i ON r.object_id=i.id
-            INNER join information_object_i18n ioin on ioin.id = i.id
-            inner join term_i18n tin on t.id=tin.id
-WHERE t.id=52048 and tin.culture ='ca'
+-- obtener el term.id de un slug de un term concreto
+select object_id
+from slug
+where slug = :slug
 
-
+-- obtener el term id de una cultura y slug
+select t.id, tin.name, tin.culture
+from term t
+         inner join term_i18n tin on t.id = tin.id
+         inner join slug s on s.object_id = t.id
+where s.slug = :slug -- 'actes-culturals-3'
+  and culture = :culture -- 'ca'
 
 
