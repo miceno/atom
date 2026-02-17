@@ -130,6 +130,7 @@ EOF;
 
             array_push($names[$term->name], $term->id);
         }
+        ksort($names);
         $this->log('Taxonomy term usage populated.');
         $this->log('Taxonomy term usage:');
         $this->log(json_encode($names, JSON_PRETTY_PRINT));
