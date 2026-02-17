@@ -34,11 +34,10 @@ where tin.culture = 'ca'
 -- obtener los objetos relacionados con un term concreto
 SELECT t.id term_id, tin.name, ioin.title, r.object_id
 FROM term t
-         INNER JOIN object_term_relation r
-                    ON r.term_id = t.id
-         INNER JOIN information_object i ON r.object_id = i.id
-         INNER join information_object_i18n ioin on ioin.id = i.id
+         INNER JOIN object_term_relation r ON r.term_id = t.id
          inner join term_i18n tin on t.id = tin.id
+         INNER JOIN information_object i ON r.object_id = i.id
+         INNER join information_object_i18n ioin on ioin.id = i.id and tin.culture = ioin.culture
 WHERE t.id = :t_id -- 52136
   and tin.culture = :culture
 -- 'ca'
