@@ -129,24 +129,32 @@ EOF;
             }
 
             array_push($names[$term->name], $term->id);
+
         }
+        ksort($names);
+
+        foreach ($names as $name => &$ids) {
+            $ids = array_reverse($ids);
+        }
+        unset($ids);
+
         $this->log('Taxonomy term usage populated.');
         $this->log('Taxonomy term usage:');
         $this->log(json_encode($names, JSON_PRETTY_PRINT));
     }
 
-    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false)
+    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false, $reverse=false)
     {
         foreach ($names as $name => $usage) {
             if (count($usage) > 1) {
-                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects, $dry_run);
+                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects, $dry_run, $reverse);
             }
         }
     }
 
-    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false)
+    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false, $reverse=false)
     {
-        $selected_id = array_shift($usage);
+        $selected_id = $reverse ? array_pop($usage) : array_shift($usage);
 
         $this->log("Normalizing terms with name '".$name."'...");
 
