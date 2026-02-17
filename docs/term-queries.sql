@@ -65,14 +65,12 @@ from term t
 where tin.name COLLATE utf8mb4_general_ci = :name -- 'Actes culturals'
   and culture = :culture -- 'ca'
 
-
-update object_term_relation
-FROM term t
-    INNER JOIN object_term_relation r
-on r.term_id = t.id
+-- mover todos los objetos relacionados con un term concreto a otro term concreto
+update object_term_relation r
+    INNER JOIN term t on r.term_id = t.id
     inner join term_i18n tin on t.id = tin.id
     INNER JOIN information_object i ON r.object_id = i.id
     INNER join information_object_i18n ioin on ioin.id = i.id and tin.culture = ioin.culture
-    set term_id = :new_term_id
+    set r.term_id = :new_term_id
 WHERE t.id = :old_term_id -- 52136
   and tin.culture = :culture
