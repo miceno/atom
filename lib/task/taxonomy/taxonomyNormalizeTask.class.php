@@ -24,7 +24,10 @@
  */
 class taxonomyNormalizeTask extends arBaseTask
 {
-    protected function configure()
+    // Taxonomy ID
+    private int|false $taxonomyId = false;
+
+    protected function configure(): void
     {
         $this->addArguments([
             new sfCommandArgument('taxonomy-name', sfCommandArgument::REQUIRED, 'The name of the taxonomy to normalize'),
@@ -74,7 +77,10 @@ Normalize taxonomy terms
 EOF;
     }
 
-    protected function execute($arguments = [], $options = [])
+    /**
+     * @throws sfException
+     */
+    protected function execute($arguments = [], $options = []): void
     {
         parent::execute($arguments, $options);
 
@@ -127,7 +133,7 @@ EOF;
         return false;
     }
 
-    protected function populateTaxonomyNameUsage(&$names, $culture)
+    protected function populateTaxonomyNameUsage(&$names, $culture): void
     {
         $sql = 'SELECT t.id, i.name FROM term t
             INNER JOIN term_i18n i ON t.id=i.id
@@ -139,24 +145,17 @@ EOF;
         $terms = QubitPdo::fetchAll($sql, $params, ['fetchMode' => PDO::FETCH_OBJ]);
 
         foreach ($terms as $term) {
-            if (!isset($names[$term->name])) {
-                $names[$term->name] = [];
-            }
-
-            array_push($names[$term->name], $term->id);
-
+            $names[$term->name] ??= [];
+            $names[$term->name][] = $term->id;
         }
         ksort($names);
 
-        foreach ($names as $name => &$ids) {
-            $ids = array_reverse($ids);
-        }
-        unset($ids);
+        $names = array_map('array_reverse', $names);
 
         $this->log('Taxonomy term usage populated.');
     }
 
-    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false, $reverse=false)
+    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false, $reverse=false): void
     {
         foreach ($names as $name => $usage) {
             if (count($usage) > 1) {
@@ -165,7 +164,7 @@ EOF;
         }
     }
 
-    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false, $reverse=false)
+    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false, $reverse=false): void
     {
         $selected_id = $reverse ? array_pop($usage) : array_shift($usage);
 
@@ -207,7 +206,7 @@ EOF;
         }
     }
 
-    protected function reindexAffectedObjects($affectedObjects)
+    protected function reindexAffectedObjects($affectedObjects): void
     {
         $search = QubitSearch::getInstance();
         foreach ($affectedObjects as $id) {
