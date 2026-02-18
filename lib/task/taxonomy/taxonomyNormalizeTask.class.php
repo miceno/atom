@@ -58,6 +58,12 @@ class taxonomyNormalizeTask extends arBaseTask
                 sfCommandOption::PARAMETER_NONE,
                 'Dry run (no database changes)',
                 null),
+            new sfCommandOption(
+                'verbose',
+                'v',
+                sfCommandOption::PARAMETER_NONE,
+                'Verbose output',
+                null),
         ]);
 
         $this->namespace = 'taxonomy';
@@ -76,6 +82,10 @@ EOF;
         if ($options['dry-run']) {
             $this->log('*** DRY RUN (no changes will be made to the database) ***');
         }
+        // Verbose output
+        if ($options['verbose']) {
+            $this->log('*** Verbose output ***');
+        }
 
         // Look up taxonomy ID using name
         $this->taxonomyId = $this->getTaxonomyIdByName($arguments['taxonomy-name'], $options['culture']);
@@ -89,6 +99,11 @@ EOF;
         $names = [];
         $affectedObjects = [];
         $this->populateTaxonomyNameUsage($names, $options['culture']);
+        if ($options['verbose'] === true){
+            $this->log('Taxonomy term usage:');
+            $this->log(json_encode($names, JSON_PRETTY_PRINT));
+        }
+
         $this->normalizeTaxonomy($names, $affectedObjects, $options['dry-run']);
         if ($options['dry-run'] === false) {
             $this->reindexAffectedObjects($affectedObjects);
@@ -139,8 +154,6 @@ EOF;
         unset($ids);
 
         $this->log('Taxonomy term usage populated.');
-        $this->log('Taxonomy term usage:');
-        $this->log(json_encode($names, JSON_PRETTY_PRINT));
     }
 
     protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false, $reverse=false)
