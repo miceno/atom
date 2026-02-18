@@ -67,6 +67,12 @@ class taxonomyNormalizeTask extends arBaseTask
                 sfCommandOption::PARAMETER_NONE,
                 'Verbose output',
                 null),
+            new sfCommandOption(
+                'reverse',
+                'r',
+                sfCommandOption::PARAMETER_NONE,
+                'Reverse normalization (keep last term instead of first)',
+                null),
         ]);
 
         $this->namespace = 'taxonomy';
@@ -84,6 +90,10 @@ EOF;
     {
         parent::execute($arguments, $options);
 
+        // Reverse normalization
+        if ($options['reverse']) {
+            $this->log('*** Reverse normalization (last term will be kept instead of first) ***');
+        }
         // Remind user they are in dry run mode
         if ($options['dry-run']) {
             $this->log('*** DRY RUN (no changes will be made to the database) ***');
@@ -105,7 +115,13 @@ EOF;
         $names = [];
         $affectedObjects = [];
         $this->populateTaxonomyNameUsage($names, $options['culture']);
-        if ($options['verbose'] === true){
+        if($options['reverse']) {
+            if ($options['verbose']){
+                $this->log('Reversing terms list');
+            }
+            $names = array_map('array_reverse', $names);
+        }
+        if ($options['verbose']){
             $this->log('Taxonomy term usage:');
             $this->log(json_encode($names, JSON_PRETTY_PRINT));
         }
@@ -150,23 +166,21 @@ EOF;
         }
         ksort($names);
 
-        $names = array_map('array_reverse', $names);
-
         $this->log('Taxonomy term usage populated.');
     }
 
-    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false, $reverse=false): void
+    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false): void
     {
         foreach ($names as $name => $usage) {
             if (count($usage) > 1) {
-                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects, $dry_run, $reverse);
+                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects, $dry_run);
             }
         }
     }
 
-    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false, $reverse=false): void
+    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false): void
     {
-        $selected_id = $reverse ? array_pop($usage) : array_shift($usage);
+        $selected_id = array_shift($usage);
 
         $this->log("Normalizing terms with name '".$name."'...");
 
