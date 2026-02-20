@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2025-10-05T23:20:23Z" product-name="messages">
+  <file source-language="en" target-language="" datatype="plaintext" original="messages" date="2025-11-12T17:24:23Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="32e271bec7e31df1838efd94cf39df8b980c7283">
@@ -156,7 +156,7 @@
       </trans-unit>
       <trans-unit id="0b9f3569d2a9e7fcb34f829073683eb330806099" xml:space="preserve">
         <source xml:space="preserve">%1% representation</source>
-        <target xml:space="preserve" state="final">%1% representaci&#xF3; </target>
+        <target xml:space="preserve" state="final">Representaci&#xF3; de %1% </target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/digitalobject/templates/editSuccess.php</note>
       </trans-unit>
       <trans-unit id="91ea522014d58b4914a67ba9a1c0d42c0d937e33" xml:space="preserve">
@@ -171,7 +171,7 @@
       </trans-unit>
       <trans-unit id="39d4cbca0698bc15a5b6950cf93bd7dd4fea15a3" xml:space="preserve">
         <source xml:space="preserve">%1% term</source>
-        <target xml:space="preserve" state="final">terme %1%</target>
+        <target xml:space="preserve" state="final">Terme de %1%</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/taxonomy/templates/indexSuccess.php</note>
       </trans-unit>
       <trans-unit id="edde746a0a2482e66ba979bae616542d0eae0919" xml:space="preserve">
@@ -4558,7 +4558,7 @@
       </trans-unit>
       <trans-unit id="328d8069dc190f42a30ec62b9ee09e13d9d0c03f">
         <source xml:space="preserve">Return to user list</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Llista d'usuaris</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/user/templates/_showActions.mod_standard.php</note>
       </trans-unit>
       <trans-unit id="1037a93521b529431fc4829133e4d92635856d2c">
@@ -5423,7 +5423,7 @@
       </trans-unit>
       <trans-unit id="de6f1e890b1069703f0aa9cdd0d3ba3a4591e777">
         <source xml:space="preserve">There are no jobs to report on.</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">No hi ha tasques.</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/jobs/templates/browseSuccess.php</note>
       </trans-unit>
       <trans-unit id="70cd5321f810073574025a4b68cf0ace688b7f17">
@@ -5673,7 +5673,7 @@
       </trans-unit>
       <trans-unit id="6e49e093e26813136b4e944aa89b3abab08f153d">
         <source xml:space="preserve">Update descendants</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Actualitzar descendents</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/informationobject/templates/updatePublicationStatusSuccess.php</note>
       </trans-unit>
       <trans-unit id="e78799aa95a6c2d2af0dd7be578fcfc6e2decb85">
@@ -5883,7 +5883,7 @@
       </trans-unit>
       <trans-unit id="9f8a2389a20ca0752aa9e95093515517e90e194c">
         <source xml:space="preserve">User</source>
-        <target xml:space="preserve"/>
+        <target xml:space="preserve">Usuari</target>
         <note>https://github.com/artefactual/atom/blob/master/apps/qubit/modules/user/templates/listSuccess.mod_ext_auth.php</note>
       </trans-unit>
       <trans-unit id="2764971eb13a1a505b93df836819177745d6b0c1" xml:space="preserve">
