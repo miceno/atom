@@ -47,7 +47,6 @@
                       '%1%' => strtolower(sfConfig::get('app_ui_label_repository')),
                       '%2%' => strtolower(sfConfig::get('app_ui_label_digitalobject')),
                   ]))); ?>
-
             <?php echo render_field($form->repository_quota
                 ->label(__(
                     'Default %1% upload limit (GB)',
@@ -61,7 +60,26 @@
                     ]))); ?>
 
             <?php echo render_field($form->explode_multipage_files
-                ->label(__('Upload multi-page files as multiple descriptions'))); ?>
+              ->label(__('Upload multi-page files as multiple descriptions'))); ?>
+
+            <?php echo render_field($form
+              ->convert_density
+              ->label(__('Derivatives density'))
+              ->help(__('Density of media conversion in dpi, reduce it to reduce quality.')));
+            ?>
+
+            <?php echo render_field($form
+              ->convert_quality
+              ->label(__('Derivatives quality'))
+              ->help(__('Quality of derivatives, a number from 1 to 100, the higher the number, the better the quality, but large derivative files.')));
+            ?>
+
+            <?php echo render_field($form
+              ->convert_memory
+              ->label(__('Derivatives memory limit'))
+              ->help(__('Memory limit, you can use suffixes like MB, GB, or KiB, MiB, GiB to specify the unit.')));
+            ?>
+            
           </div>
         </div>
       </div>
