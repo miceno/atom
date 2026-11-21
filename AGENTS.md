@@ -5,6 +5,35 @@
 - Main app: `apps/qubit/`. Core code: `lib/`. Features/themes often live in `plugins/` (e.g. `arDominionB5Plugin`, `qtAccessionPlugin`, standards plugins like `sfIsadPlugin`).
 - Root `symfony` is the project CLI (`php symfony ...`). `config/` and `apps/qubit/config/` hold runtime/app config (defaults in `config/app.yml`).
 
+## Tech stack
+
+**Backend**
+- PHP 8.3 (Docker `php:8.3-fpm-alpine`; extensions: pdo_mysql, mysqli, intl, ldap, xsl, zip, apcu, memcache, pcov, xdebug)
+- Symfony 1.4 framework (`sfProjectConfiguration`-based)
+- Propel ORM via `sfPropelPlugin`
+- MySQL/Percona (primary datastore)
+- Elasticsearch 7.10 (OSS) via `ruflin/elastica`
+- Memcached (caching)
+- Gearman (`net_gearman`) for background jobs (worker mode)
+- LDAP / CAS / OIDC auth (`apereo/phpcas`, `jumbojett/openid-connect-php`)
+- Other PHP libs: `ezyang/htmlpurifier`, `geoip2/geoip2`, `league/csv`, EasyRDF, FluentDOM
+
+**Frontend**
+- jQuery 3.6 + jQuery UI, Bootstrap 5.3, Sass
+- Webpack 5 build (hashed bundles to `dist/`, Sass compilation)
+- Uppy (file uploads), jsTree, FontAwesome, Masonry, MediaElement, etc.
+
+**Testing**
+- PHPUnit 9.5 (unit, `test/phpunit`)
+- Cypress 14 (E2E, `cypress/e2e`)
+
+**Infra / tooling**
+- Docker Compose dev stack (nginx, PHP-FPM, Gearman, Percona, Elasticsearch, Memcached)
+- Apache FOP 2.1 (XSL-FO → PDF), ImageMagick, ffmpeg, ghostscript, poppler-utils
+- Node.js + npm, Composer (vendor dir `vendor/composer`)
+
+**License:** AGPL-3.0. Typically deployed on Linux (Ubuntu LTS); shared-hosting compatible.
+
 ## Setup and build
 - PHP deps: `composer install` (uses `vendor/composer` per `composer.json` config).
 - JS deps: `npm ci` in CI, or `npm install` locally.
