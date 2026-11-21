@@ -170,3 +170,27 @@ The user will also specify the culture of the descriptions to be moved, ensuring
 ```# To move descriptions from a source term with slug "source-term-slug" to a target term with slug "target-term-slug" for a specific culture "en"
 php symphony arxiu:move-descriptions --source-slug=source-term-slug --target-slug=target-term-slug --culture=en
 ```
+
+Clean OCRed text before importing it into AtoM
+==
+The Arxiu Plugin for AtoM includes a feature that allows users to clean OCRed text before importing it into the AtoM system. This feature is designed to improve the quality of OCRed text by removing unwanted characters, correcting common OCR errors, and ensuring that the text is properly formatted for import into AtoM. The feature includes the following functionalities:
+- Text cleaning: The feature provides tools for cleaning OCRed text, including options for removing unwanted characters, correcting common OCR errors, and ensuring that the text is properly formatted for import into AtoM. This helps to improve the quality of OCRed text and ensures that it is suitable for use in the AtoM system.
+- Easy setup: The feature is designed to be easy to set up and use, allowing users to quickly and efficiently clean OCRed text before importing it into AtoM. This makes it accessible for users with varying levels of technical expertise, enabling them to improve the quality of their OCRed text without needing extensive technical knowledge.
+- Integration with AtoM: The feature is integrated with the AtoM system, allowing users to select cleaning strategies, using AtoM settings on the UI.
+
+The cleaning process is designed to clean and normalize OCR-generated text, specifically targeting common artifacts and errors introduced during OCR (Optical Character Recognition) processes. Here are the main cleaning strategies it applies, explained for a user manual:
+
+1. Control Character and Whitespace Normalization:
+  - Converts form-feed and carriage return characters to standard newlines.
+  - Collapses multiple consecutive newlines into just two.
+  - Replaces multiple spaces with a single space for consistent spacing.
+
+2. Removal and Replacement of OCR Artifacts:
+  - Replaces or removes common OCR misread characters and symbols (e.g., the replacement character �, double quotes, stray backslashes).
+  - Normalizes repeated dashes, dots, and bullet points.
+  - Fixes line breaks after certain punctuation (e.g., "I\n" becomes "I ").
+
+3. Final Text Polishing:
+  - Trims leading and trailing punctuation and whitespace to ensure clean, readable output.
+
+The cleaning process applies when a PDF document is imported as a digital object in AtoM. The cleaned text is then stored in the appropiate field in AtoM, ensuring that the OCRed text is of high quality and suitable for use in the AtoM system. This helps to improve the overall quality of metadata and content in AtoM, making it more useful and accessible for users. The feature is designed to be efficient and effective, providing a streamlined process for cleaning OCRed text before it is imported into AtoM, ultimately enhancing the usability and value of the data in the AtoM system.
