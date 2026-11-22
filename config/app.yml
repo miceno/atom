@@ -47,7 +47,7 @@ all:
   # same Gearman server, in which case, each instance's workers_key must be set
   # to a different string value to make sure the proper workers take the job for
   # their related instance.
-  workers_key:
+  workers_key: atom
 
   # Specify password_hash algorithm constant
   # See: https://www.php.net/manual/en/password.constants.php
@@ -59,6 +59,7 @@ all:
 
   # Maximum allowed value for full-width treeview "items per page" setting
   treeview_items_per_page_max: 10000
+  default_timezone: Europe/Madrid
 
   # Content Security Policy (CSP) header configuration. CSP settings are used
   # only when a B5 theme is in use, otherwise these settings will be ignored.

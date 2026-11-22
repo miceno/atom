@@ -1,0 +1,11 @@
+# Elasticsearch
+# bootstrap.memory_lock=true
+# cluster.routing.allocation.disk.threshold_enabled=false
+# discovery.type=single-node
+ES_JAVA_OPTS=-Xms384m -Xmx384m
+
+# AtoM and AtoM worker
+# ATOM_ELASTICSEARCH_HOST=elasticsearch
+
+# ELASTICSEARCH_DATA_DIR=/usr/share/elasticsearch/data
+# ELASTICSEARCH_XPACK_SECURITY_ENABLED=false

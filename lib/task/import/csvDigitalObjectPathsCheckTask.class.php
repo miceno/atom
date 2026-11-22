@@ -114,7 +114,7 @@ EOF;
 
         while ($row = fgetcsv($fh, 60000)) {
             // Remove absolute path leading to image file
-            array_push($values, basename($row[$imageColumnIndex]));
+            array_push($values, $row[$imageColumnIndex]);
         }
 
         return $values;

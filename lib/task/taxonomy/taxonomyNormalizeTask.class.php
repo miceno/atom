@@ -52,6 +52,12 @@ class taxonomyNormalizeTask extends arBaseTask
                 'The name of the culture to normalize (defaults to "en")',
                 'en'
             ),
+            new sfCommandOption(
+                'dry-run',
+                'd',
+                sfCommandOption::PARAMETER_NONE,
+                'Dry run (no database changes)',
+                null),
         ]);
 
         $this->namespace = 'taxonomy';
@@ -66,6 +72,11 @@ EOF;
     {
         parent::execute($arguments, $options);
 
+        // Remind user they are in dry run mode
+        if ($options['dry-run']) {
+            $this->log('*** DRY RUN (no changes will be made to the database) ***');
+        }
+
         // Look up taxonomy ID using name
         $this->taxonomyId = $this->getTaxonomyIdByName($arguments['taxonomy-name'], $options['culture']);
         if (!$this->taxonomyId) {
@@ -78,8 +89,10 @@ EOF;
         $names = [];
         $affectedObjects = [];
         $this->populateTaxonomyNameUsage($names, $options['culture']);
-        $this->normalizeTaxonomy($names, $affectedObjects);
-        $this->reindexAffectedObjects($affectedObjects);
+        $this->normalizeTaxonomy($names, $affectedObjects, $options['dry-run']);
+        if ($options['dry-run'] === false) {
+            $this->reindexAffectedObjects($affectedObjects);
+        }
 
         $this->log('Affected objects have been reindexed.');
     }
@@ -117,18 +130,21 @@ EOF;
 
             array_push($names[$term->name], $term->id);
         }
+        $this->log('Taxonomy term usage populated.');
+        $this->log('Taxonomy term usage:');
+        $this->log(json_encode($names, JSON_PRETTY_PRINT));
     }
 
-    protected function normalizeTaxonomy($names, &$affectedObjects)
+    protected function normalizeTaxonomy($names, &$affectedObjects, $dry_run = false)
     {
         foreach ($names as $name => $usage) {
             if (count($usage) > 1) {
-                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects);
+                $this->normalizeTaxonomyTerm($name, $usage, $affectedObjects, $dry_run);
             }
         }
     }
 
-    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects)
+    protected function normalizeTaxonomyTerm($name, $usage, &$affectedObjects, $dry_run = false)
     {
         $selected_id = array_shift($usage);
 
@@ -144,22 +160,29 @@ EOF;
 
             $this->log('Changing object term relations from term '.$id.' to '.$selected_id.'.');
 
-            $sql = 'UPDATE object_term_relation SET term_id=:newId WHERE term_id=:oldId';
-            $params = [':newId' => $selected_id, ':oldId' => $id];
-            QubitPdo::modify($sql, $params);
+            // Remind user they are in dry run mode
+            if ($dry_run === false) {
+                $sql = 'UPDATE object_term_relation SET term_id=:newId WHERE term_id=:oldId';
+                $params = [':newId' => $selected_id, ':oldId' => $id];
+                QubitPdo::modify($sql, $params);
+            }
 
             if (QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID == $this->taxonomyId) {
                 $this->log('Changing level of descriptions from term '.$id.' to '.$selected_id.'.');
 
-                $sql = 'UPDATE information_object SET level_of_description_id=:newId WHERE level_of_description_id=:oldId';
-                QubitPdo::modify($sql, $params);
+                if ($dry_run === false) {
+                    $sql = 'UPDATE information_object SET level_of_description_id=:newId WHERE level_of_description_id=:oldId';
+                    QubitPdo::modify($sql, $params);
+                }
             }
 
             $this->log('Deleting term ID '.$id.'.');
 
             // Delete taxonomy term
-            $term = QubitTerm::getById($id);
-            $term->delete();
+            if ($dry_run === false) {
+                $term = QubitTerm::getById($id);
+                $term->delete();
+            }
         }
     }
 

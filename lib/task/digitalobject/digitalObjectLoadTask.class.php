@@ -303,7 +303,7 @@ class digitalObjectLoadTask extends arBaseTask
     protected function getPath($path, $options = [])
     {
         if (isset($options['path'])) {
-            $path = $options['path'].$path;
+            $path = $options['path'].DIRECTORY_SEPARATOR.$path;
         }
 
         return $path;
