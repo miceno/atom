@@ -42,6 +42,22 @@ services:
     ports:
       - "63001:80"
 
+  cypress:
+    image: cypress/included:14.5.3
+    working_dir: /app
+    environment:
+      - CYPRESS_baseUrl=http://nginx
+    volumes:
+      - ..:/app
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - npm ci && npx cypress run
+    depends_on:
+      - atom
+      - nginx
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     env_file: etc/environment
