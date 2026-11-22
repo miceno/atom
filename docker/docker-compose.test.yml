@@ -58,6 +58,31 @@ services:
       - atom
       - nginx
 
+  phpunit:
+    build: ..
+    env_file: etc/environment
+    environment:
+      - ATOM_COVERAGE=${ATOM_COVERAGE:-false}
+    depends_on:
+      - percona
+      - elasticsearch
+    volumes:
+      - composer_deps:/atom/src/vendor/composer
+      - npm_deps:/atom/src/node_modules
+      - ..:/atom/src:rw
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sleep 10
+        php -d memory_limit=1G symfony tools:install \
+          --database-host=percona --database-port=3306 \
+          --database-name=atom --database-user=atom \
+          --database-password=atom_12345 \
+          --search-host=elasticsearch --search-port=9200 \
+          --search-index=atom --demo --no-confirmation
+        composer test
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     env_file: etc/environment

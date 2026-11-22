@@ -4,8 +4,15 @@
 Unit tests
 ======
 
+Run unit tests inside Docker using the test compose stack:
+
 ```command
+export COMPOSE_FILE=$PWD/docker/docker-compose.test.yml
+docker compose up -d percona elasticsearch
+docker compose run --rm phpunit
 ```
+
+On Linux hosts, run `sudo sysctl -w vm.max_map_count=262144` before starting Elasticsearch (not needed on macOS Docker Desktop).
 
 Integration tests
 =====

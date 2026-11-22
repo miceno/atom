@@ -52,6 +52,7 @@
 - PHPUnit config: `phpunit.xml` (bootstrap `test/bootstrap/phpunit.php`, suite `test/phpunit`, runs with `stderr=true`, boots `qubit` test env).
 - Run all PHPUnit unit tests: `composer test` (or `vendor/composer/bin/phpunit`).
 - Single test/file: `vendor/composer/bin/phpunit test/phpunit/<TestFile>.php` (or pass `--filter <name>`); debug/coverage helpers in composer scripts: `composer test-debug`, `composer test-cov`.
+- Run unit tests inside Docker via the compose test stack: `export COMPOSE_FILE=$PWD/docker/docker-compose.test.yml`, `docker compose up -d percona elasticsearch`, then `docker compose run --rm phpunit` (on Linux hosts, set `sudo sysctl -w vm.max_map_count=262144` first; not needed on macOS Docker Desktop). The one-shot `phpunit` service reuses the app image, seeds demo data with in-network hosts (`percona:3306`, `elasticsearch:9200`) via `php -d memory_limit=1G symfony tools:install ... --demo --no-confirmation`, then runs `composer test`; CI is unchanged.
 - CI unit-test environment (verified): starts Percona + Elasticsearch from `docker/docker-compose.dev.yml`, then installs demo DB/index before tests:
   - `php symfony tools:install --database-host=127.0.0.1 --database-port=63003 --database-name=atom --database-user=atom --database-password=atom_12345 --search-host=127.0.0.1 --search-port=63002 --search-index=atom --demo --no-confirmation`
   - then `composer test`
